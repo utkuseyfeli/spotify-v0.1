@@ -1,0 +1,14 @@
+<h3>Authenticate</h3>
+
+<div>
+    <label for="client_id">client_id: </label>
+    <input #client_id id="client_id">
+    <br> <br>
+
+    <label for="client_secret">client_secret: </label>
+    <input #client_secret id="client_secret">
+    <br> <br>
+    
+    <button (click)="authenticate(client_id.value, client_secret.value)">Submit</button>
+</div>
+
