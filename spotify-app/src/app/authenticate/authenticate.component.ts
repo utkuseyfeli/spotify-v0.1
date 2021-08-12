@@ -13,6 +13,16 @@ export class AuthenticateComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     if(window.location.search.length > 0){
       console.log("utkuuuuu succes on the first part");
+      
+      let needed = null;
+      const code = window.location.search;
+      console.log(code);
+
+      if(code.length > 0){
+        const urlParams = new URLSearchParams(code);
+        needed = urlParams.get('code');
+      }
+      console.log("needed is " + needed);
     }
   }
 
