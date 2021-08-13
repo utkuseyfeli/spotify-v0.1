@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
+import { RespObject } from '../response';
 import { SpotifyService } from '../spotify.service';
 
 @Component({
@@ -8,21 +9,26 @@ import { SpotifyService } from '../spotify.service';
 })
 export class AuthenticateComponent implements OnInit, OnChanges {
 
+  respObject?: RespObject;
+
   constructor(private spotify: SpotifyService) { }
 
   ngOnInit(): void {
     if(window.location.search.length > 0){
       console.log("utkuuuuu succes on the first part");
       
-      let needed = null;
+      let needed: string;
       const code = window.location.search;
-      console.log(code);
+      // console.log(code);
 
       if(code.length > 0){
         const urlParams = new URLSearchParams(code);
-        needed = urlParams.get('code');
+        needed = urlParams.get('code')!; // ! is the non-null assertion operator
+        // console.log("needed is " + needed);
+
+        this.spotify.fetchAccessToken(needed);
       }
-      console.log("needed is " + needed);
+      
     }
   }
 
