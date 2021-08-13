@@ -38,4 +38,7 @@ export class AuthenticateComponent implements OnInit, OnChanges {
     this.spotify.authenticate(client_id, client_secret);
   }
 
+  refreshTokens(){
+    this.spotify.refreshAccesToken();
+  }
 }

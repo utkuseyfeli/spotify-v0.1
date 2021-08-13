@@ -13,10 +13,13 @@ export class SpotifyService {
   authUrl: string = "https://accounts.spotify.com/authorize";
   baseUrl: string = "https://accounts.spotify.com/api";
   respObject?: RespObject;
+  auth = 'Basic ' + btoa(localStorage.getItem('client_id') + ":" + localStorage.getItem('client_secret'));
 
   httpOptions = {
     headers: new HttpHeaders(
-      {'Content-Type': 'application/x-www-form-urlencoded'}
+      {'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': this.auth
+      }
     ),
     observe: 'response' as 'response'
   };
@@ -54,11 +57,20 @@ export class SpotifyService {
 
     console.log("clientid " + client_id +  "  " + client_secret);
 
-    let headers = new HttpHeaders(
-      {'Content-Type': 'application/x-www-form-urlencoded'}
-    );
+    this.fetchRespOpbject(body);
+  }
 
-    this.http.post<RespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions).pipe()
+  fetchRespOpbject(body: string){
+
+    
+    console.log(this.auth);
+    console.log(body);
+    
+    this.httpOptions.headers.append('Authorization', this.auth);
+
+    console.log(this.httpOptions.headers.get('Authorization'));
+
+    this.http.post<RespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions)
       .subscribe(
         res => {
           console.log(res);
@@ -77,9 +89,15 @@ export class SpotifyService {
           localStorage.setItem("refresh_token", this.respObject.refresh_token);
         }
       );
-
-
   }
 
+  refreshAccesToken(){
+    let refresh_token = localStorage.getItem('refresh_token');
+    let body = "grant_type=refresh_token";
+    body += "&refresh_token=" + refresh_token;
 
+
+    console.log("refresh: " + body);
+    this.fetchRespOpbject(body);
+  }
 }
