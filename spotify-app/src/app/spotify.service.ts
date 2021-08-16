@@ -143,4 +143,24 @@ export class SpotifyService {
 
     return this.http.get<PlaylistRespObject>("https://api.spotify.com/v1/me/playlists", httpOptions)
   }
+
+  search(query: string, conditions: string): Observable<JSON>{
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
+
+    let baseUrl: string = "https://api.spotify.com/v1/search";
+    baseUrl += "?q=" + query;
+    baseUrl += "&type=" + conditions;
+    baseUrl += "&market=TR";
+    baseUrl += "&limit=15";
+    baseUrl += "&offset=0";
+
+    return this.http.get<JSON>(baseUrl, httpOptions);
+  }
 }

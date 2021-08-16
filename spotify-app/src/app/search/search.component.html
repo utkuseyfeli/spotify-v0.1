@@ -1,0 +1,46 @@
+<h3>Search for stuff</h3>
+
+<div>
+    <input type="text" id="searchStr" [(ngModel)]="searchStr" (keyup)="search()" placeholder="Search....">
+
+    <label for="albums"> Albums</label>
+    <input type="checkbox" id="albums" value="albums" [(ngModel)]="checked[0]">
+    
+    <label for="tracks"> Tracks</label>
+    <input type="checkbox" id="tracks" [(ngModel)]="checked[1]">
+
+    <label for="playlists"> Playlists</label>
+    <input type="checkbox" id="playlists" [(ngModel)]="checked[2]">
+
+    <label for="artists"> Artists</label>
+    <input type="checkbox" id="artists" [(ngModel)]="checked[3]">
+    
+</div>
+
+<div *ngIf="playlists && checked[2]">
+    <h3>Playlists</h3>
+    <li *ngFor="let playlist of playlists"> {{playlist.name}}
+
+    </li>
+</div>
+
+<div *ngIf="artists && checked[3]">
+    <h3>Artists</h3>
+    <li *ngFor="let artist of artists"> {{artist.name}}
+        
+    </li>
+</div>
+
+<div *ngIf="albums && checked[0]">
+    <h3>Albums</h3>
+    <li *ngFor="let album of albums"> {{album.name}}
+        
+    </li>
+</div>
+
+<div *ngIf="tracks && checked[1]">
+    <h3>Tracks</h3>
+    <li *ngFor="let track of tracks"> {{track.name}}
+        
+    </li>
+</div>
