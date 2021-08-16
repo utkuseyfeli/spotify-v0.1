@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { toUnicode } from 'punycode';
 import { asapScheduler, Observable } from 'rxjs';
 import { ConditionalExpr } from '@angular/compiler';
-import { RespObject } from './response';
+import { RefreshRespObject, RespObject } from './response';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +13,11 @@ export class SpotifyService {
   authUrl: string = "https://accounts.spotify.com/authorize";
   baseUrl: string = "https://accounts.spotify.com/api";
   respObject?: RespObject;
-  auth = 'Basic ' + btoa(localStorage.getItem('client_id') + ":" + localStorage.getItem('client_secret'));
+  
 
   httpOptions = {
     headers: new HttpHeaders(
-      {'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': this.auth
+      {'Content-Type': 'application/x-www-form-urlencoded'
       }
     ),
     observe: 'response' as 'response'
@@ -55,36 +54,42 @@ export class SpotifyService {
     body += "&client_id=" + client_id;
     body += "&client_secret=" + client_secret;
 
-    console.log("clientid " + client_id +  "  " + client_secret);
+    console.log("clientidand secret  " + client_id +  "  " + client_secret);
 
     this.fetchRespOpbject(body);
   }
 
   fetchRespOpbject(body: string){
-
-    
-    console.log(this.auth);
     console.log(body);
-    
-    this.httpOptions.headers.append('Authorization', this.auth);
 
-    console.log(this.httpOptions.headers.get('Authorization'));
+    let auth: string = 'Basic ' + btoa(localStorage.getItem('client_id') + ":" + localStorage.getItem('client_secret'));
+    console.log("Auth string is: "+ auth);
+
+    this.httpOptions={
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': auth
+      }),
+      observe: 'response' as 'response'
+    }
+    
+    console.log("this is headers get authorization: " + this.httpOptions.headers.get('Authorization'));
 
     this.http.post<RespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions)
       .subscribe(
         res => {
-          console.log(res);
-          console.log(res.body);
-          console.log(res.status);
-          console.log(res.statusText);
+          console.log("response: "+ res);
+          console.log("response body: "+res.body);
+          console.log("response status:" + res.status);
+          console.log("response status text: " +res.statusText);
 
           this.respObject = res.body as RespObject;
-          console.log(this.respObject);
+          console.log("response object: " + this.respObject);
 
-          console.log(this.respObject?.access_token);
-          console.log(this.respObject?.expires_in);
-          console.log(this.respObject?.token_type);
-          console.log(this.respObject?.refresh_token);
+          console.log("response object acces token: "+this.respObject?.access_token);
+          console.log("response object expires_in: "+this.respObject?.expires_in);
+          console.log("response object token type: "+this.respObject?.token_type);
+          console.log("response object refresh token: "+this.respObject?.refresh_token);
           localStorage.setItem('acces_token', this.respObject.access_token);
           localStorage.setItem("refresh_token", this.respObject.refresh_token);
         }
@@ -98,6 +103,35 @@ export class SpotifyService {
 
 
     console.log("refresh: " + body);
-    this.fetchRespOpbject(body);
+    // this.fetchRespOpbject(body);
+
+    this.http.post<RefreshRespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions)
+      .subscribe(
+        res => {
+          console.log("Response: "+res);
+          let response: RefreshRespObject = res.body as RefreshRespObject;
+          // save the new acces token
+        }
+      )
+  }
+
+  getUser(){
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
+
+
+
+    let result = this.http.get<HttpResponse<any>>("https://api.spotify.com/v1/me", httpOptions).subscribe(
+      res => {
+        console.log(res);
+      }
+    );
+    console.log(result);
   }
 }

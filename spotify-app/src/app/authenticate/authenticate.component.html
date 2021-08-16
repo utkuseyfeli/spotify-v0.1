@@ -10,7 +10,11 @@
     <br> <br>
     
     <button (click)="authenticate(client_id.value, client_secret.value)">Submit</button>
-
-    <button (click)="refreshTokens()">Refresh Tokens</button>
+    <br>
+    <button (click)="fetchAccessToken()">Fetch Acces Token</button>
+    <br>
+    <button mat-raised-button color="primary" (click)="refreshTokens()">Refresh Tokens</button>
+    <br>
+    <button (click)="getUser()">Get User</button>
 </div>
 

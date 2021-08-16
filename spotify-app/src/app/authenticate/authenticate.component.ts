@@ -1,6 +1,8 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { RespObject } from '../response';
 import { SpotifyService } from '../spotify.service';
+import {MatButtonModule} from '@angular/material/button';
+
 
 @Component({
   selector: 'app-authenticate',
@@ -14,22 +16,7 @@ export class AuthenticateComponent implements OnInit, OnChanges {
   constructor(private spotify: SpotifyService) { }
 
   ngOnInit(): void {
-    if(window.location.search.length > 0){
-      console.log("utkuuuuu succes on the first part");
-      
-      let needed: string;
-      const code = window.location.search;
-      // console.log(code);
-
-      if(code.length > 0){
-        const urlParams = new URLSearchParams(code);
-        needed = urlParams.get('code')!; // ! is the non-null assertion operator
-        // console.log("needed is " + needed);
-
-        this.spotify.fetchAccessToken(needed);
-      }
-      
-    }
+    
   }
 
   ngOnChanges(){}
@@ -40,5 +27,26 @@ export class AuthenticateComponent implements OnInit, OnChanges {
 
   refreshTokens(){
     this.spotify.refreshAccesToken();
+  }
+
+  getUser(){
+    this.spotify.getUser();
+  }
+
+  fetchAccessToken(){
+    if(window.location.search.length > 0){
+      
+      let needed: string;
+      const code = window.location.search;
+
+      if(code.length > 0){
+        const urlParams = new URLSearchParams(code);
+        needed = urlParams.get('code')!; // ! is the non-null assertion operator
+        console.log("needed is " + needed);
+
+        this.spotify.fetchAccessToken(needed);
+      }
+      
+    }
   }
 }
