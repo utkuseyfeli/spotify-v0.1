@@ -3,7 +3,9 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { toUnicode } from 'punycode';
 import { asapScheduler, Observable } from 'rxjs';
 import { ConditionalExpr } from '@angular/compiler';
-import { RefreshRespObject, RespObject } from './response';
+import { PlaylistRespObject, RefreshRespObject, RespObject } from './response';
+import { SpotifyUser } from './user';
+import { PlayList } from './playlist';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class SpotifyService {
   authUrl: string = "https://accounts.spotify.com/authorize";
   baseUrl: string = "https://accounts.spotify.com/api";
   respObject?: RespObject;
-  
+  user?: SpotifyUser;
 
   httpOptions = {
     headers: new HttpHeaders(
@@ -115,7 +117,7 @@ export class SpotifyService {
       )
   }
 
-  getUser(){
+  getUser(): Observable<SpotifyUser>{
     let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
     let httpOptions = {
       headers: new HttpHeaders(
@@ -125,13 +127,20 @@ export class SpotifyService {
       )
     }
 
+    let result = this.http.get<SpotifyUser>("https://api.spotify.com/v1/me", httpOptions)
+    return result;
+  }
 
+  getCurrentUserPlayLists(): Observable<PlaylistRespObject>{
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
 
-    let result = this.http.get<HttpResponse<any>>("https://api.spotify.com/v1/me", httpOptions).subscribe(
-      res => {
-        console.log(res);
-      }
-    );
-    console.log(result);
+    return this.http.get<PlaylistRespObject>("https://api.spotify.com/v1/me/playlists", httpOptions)
   }
 }

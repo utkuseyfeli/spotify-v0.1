@@ -1,3 +1,5 @@
+import { PlayList } from "./playlist";
+
 export interface RespObject{
     access_token: string;
     token_type: string;
@@ -11,4 +13,12 @@ export interface RefreshRespObject{
     expires_in: number;
     scope: string;
     token_type: string;
+}
+
+export interface PlaylistRespObject{
+    href: string;
+    items: PlayList[];
+    limit: number;
+    offset: number;
+    total: number;
 }

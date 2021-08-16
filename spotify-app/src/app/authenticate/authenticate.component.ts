@@ -2,6 +2,8 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 import { RespObject } from '../response';
 import { SpotifyService } from '../spotify.service';
 import {MatButtonModule} from '@angular/material/button';
+import { SpotifyUser } from '../user';
+import { PlayList } from '../playlist';
 
 
 @Component({
@@ -12,6 +14,8 @@ import {MatButtonModule} from '@angular/material/button';
 export class AuthenticateComponent implements OnInit, OnChanges {
 
   respObject?: RespObject;
+  user?: SpotifyUser;
+  playlists?: PlayList[];
 
   constructor(private spotify: SpotifyService) { }
 
@@ -29,8 +33,16 @@ export class AuthenticateComponent implements OnInit, OnChanges {
     this.spotify.refreshAccesToken();
   }
 
-  getUser(){
-    this.spotify.getUser();
+  async getUser(){
+    this.spotify.getUser().subscribe(
+      res => {
+        console.log(res);
+        this.user = res as SpotifyUser;
+        let user = this.user;
+        console.log('User country, id, name: ' + user.country + ' ' + user.id + ' ' + user.display_name);
+      }
+    );
+    
   }
 
   fetchAccessToken(){
@@ -48,5 +60,18 @@ export class AuthenticateComponent implements OnInit, OnChanges {
       }
       
     }
+  }
+
+  getCurrentUserPlaylists(){
+    this.spotify.getCurrentUserPlayLists().subscribe(
+      res => {
+
+        console.log(res);
+        console.log(res.items);
+        this.playlists = res.items;
+        // let playlists: PlayList[] = res.items as PlayList;
+        // this.playlists = playlists;
+      }
+    );
   }
 }

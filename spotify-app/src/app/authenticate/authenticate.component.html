@@ -17,4 +17,18 @@
     <br>
     <button (click)="getUser()">Get User</button>
 </div>
+<br>
+<div *ngIf='user'>
+    <h3>User: {{user.display_name}}</h3>
+    <p>Country: {{user.country}}</p>
+    <p>Id: {{user.id}}</p>
 
+    <button (click)="getCurrentUserPlaylists()">Get Playlists for this user</button>
+</div>
+<br>
+<div *ngIf="playlists && user" > 
+    <h3>Playlists of the user: {{user.display_name!}}</h3>
+    <li *ngFor="let playlist of playlists"> {{playlist.name}}
+        <p>{{playlist.description}}</p>
+    </li>
+</div>
