@@ -1,10 +1,8 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Album, Artist, PlayList, Track } from '../playlist';
 import { SpotifyService } from '../spotify.service';
-import { debounce, debounceTime, delay, distinctUntilChanged, map, switchMap } from "rxjs/operators";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Observable, Subject } from 'rxjs';
-import { PlaylistRespObject } from '../response';
-
 
 @Component({
   selector: 'app-search',
@@ -14,7 +12,6 @@ import { PlaylistRespObject } from '../response';
 export class SearchComponent implements OnInit {
 
   searchStr?: string;
-  serchReal?: string;
   searchCond: string = "";
   playlists?: PlayList[];
   artists?: Artist[];
@@ -57,6 +54,9 @@ export class SearchComponent implements OnInit {
         console.log("serr " + ser);
         if(!ser){
           this.artists = undefined;
+          this.playlists = undefined;
+          this.albums = undefined;
+          this.tracks = undefined;
         }else{
           this.spotify.search(ser, this.searchCond).subscribe(
             res => {
@@ -79,7 +79,6 @@ export class SearchComponent implements OnInit {
               if(this.checkBoxDataList[3].isChecked){
                 this.artists = obj.artists.items;
               }
-              
             }
           )
         }
@@ -102,40 +101,8 @@ export class SearchComponent implements OnInit {
     });
     this.searchCond = this.searchCond.slice(0, -1);
 
-    console.log("search condition is: "+this.searchCond);
-
+    // console.log("search condition is: "+this.searchCond);
     this.searchTerms.next(this.searchStr);
-    
-    // make a call to spotify
-    console.log("asssssss " + this.serchReal)
-    // if(this.serchReal){
-    //   this.spotify.search(this.searchStr!, searchCond).pipe(
-    //     debounceTime(2500),
-    //   ).subscribe(
-    //     res => {
-    //       // console.log(res);
-    //       console.log(JSON.parse(JSON.stringify(res)));
-    //       let obj = JSON.parse(JSON.stringify(res));
-
-    //       if(this.checkBoxDataList[0].isChecked){
-    //         this.albums = obj.albums.items;
-    //       }
-
-    //       if(this.checkBoxDataList[1].isChecked){
-    //         this.tracks = obj.tracks.items;
-    //       }
-
-    //       if(this.checkBoxDataList[2].isChecked){
-    //         this.playlists = obj.playlists.items;
-    //       }
-
-    //       if(this.checkBoxDataList[3].isChecked){
-    //         this.artists = obj.artists.items;
-    //       }
-    //     }
-    //   )      
-    // }
-    
   }
 }
 
