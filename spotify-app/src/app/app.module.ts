@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserComponent } from './user/user.component';
 import { ArtistComponent } from './artist/artist.component';
 import { AlbumComponent } from './album/album.component';
+import { TrackComponent } from './track/track.component';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { AlbumComponent } from './album/album.component';
     SearchComponent,
     UserComponent,
     ArtistComponent,
-    AlbumComponent
+    AlbumComponent,
+    TrackComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule,

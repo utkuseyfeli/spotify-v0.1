@@ -21,6 +21,8 @@ export interface Album{
     name: string;
     total_tracks: number;
     release_date: string;
+    images: Image[];
+    id: string;
 }
 
 export interface Track{
@@ -28,7 +30,8 @@ export interface Track{
     artists: Artist[];
     name: string;
     popularity: number;
-    
+    id: string;
+    preview_url: string;
 }
 
 export interface Image{

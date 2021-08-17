@@ -5,7 +5,7 @@ import { asapScheduler, Observable } from 'rxjs';
 import { ConditionalExpr } from '@angular/compiler';
 import { PlaylistRespObject, RefreshRespObject, RespObject } from './response';
 import { SpotifyUser } from './user';
-import { Album, Artist, PlayList } from './playlist';
+import { Album, Artist, PlayList, Track } from './playlist';
 
 @Injectable({
   providedIn: 'root'
@@ -189,6 +189,54 @@ export class SpotifyService {
     let url = "https://api.spotify.com/v1/artists/" + id;
 
     return this.http.get<Artist>(url, httpOptions);
+  }
+
+  getAlbum(id: string): Observable<Album>{
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
+
+    let url = "https://api.spotify.com/v1/albums/" + id;
+    url += "?market=TR";
+
+    return this.http.get<Album>(url, httpOptions);
+  }
+
+  getPlaylist(id: string): Observable<PlayList>{
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
+
+    let url = "https://api.spotify.com/v1/playlists/" + id;
+    url += "?market=TR";
+
+    return this.http.get<PlayList>(url, httpOptions);
+  }
+
+  getTrack(id:string): Observable<Track>{
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
+
+    let url = "https://api.spotify.com/v1/tracks/" + id;
+    url += "?market=TR";
+
+    return this.http.get<Track>(url, httpOptions);
   }
 
 }
