@@ -6,11 +6,21 @@
     <mat-checkbox *ngFor="let item of checkBoxDataList" [(ngModel)]="item.isChecked">
         {{item.label}}
     </mat-checkbox>
+
+    <ul class="search-result">
+        <li *ngFor="let album of albums | async" >
+          <a >
+            {{album.name}}
+          </a>
+        </li>
+      </ul>
       
 </div>
 
+
+
 <hr>
-<div *ngIf="albums && checkBoxDataList[0].isChecked">
+<!-- <div *ngIf="albums && checkBoxDataList[0].isChecked">
     <h3>Albums</h3>
     <li *ngFor="let album of albums"> {{album.name}}
         
@@ -40,5 +50,5 @@
         
     </li>
     <hr>
-</div>
+</div> -->
 
