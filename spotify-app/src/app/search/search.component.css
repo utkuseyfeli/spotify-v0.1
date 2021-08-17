@@ -2,3 +2,12 @@ div{
     background-color: lightgreen;
     padding: 3%;
 }
+mat-label{
+    color: black;
+}
+
+a{
+    color: rgb(116, 11, 148);
+    font-style: normal;
+    text-decoration: none;
+}

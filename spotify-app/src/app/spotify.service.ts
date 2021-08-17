@@ -5,7 +5,7 @@ import { asapScheduler, Observable } from 'rxjs';
 import { ConditionalExpr } from '@angular/compiler';
 import { PlaylistRespObject, RefreshRespObject, RespObject } from './response';
 import { SpotifyUser } from './user';
-import { Album, PlayList } from './playlist';
+import { Album, Artist, PlayList } from './playlist';
 
 @Injectable({
   providedIn: 'root'
@@ -174,6 +174,21 @@ export class SpotifyService {
     baseUrl += "&offset=0";
 
     return this.http.get<JSON>(baseUrl, httpOptions);
+  }
+
+  getArtist(id: string): Observable<Artist>{
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
+
+    let url = "https://api.spotify.com/v1/artists/" + id;
+
+    return this.http.get<Artist>(url, httpOptions);
   }
 
 }

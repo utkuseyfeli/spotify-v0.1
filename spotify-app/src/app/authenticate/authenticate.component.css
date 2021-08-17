@@ -2,3 +2,7 @@ div{
     background-color: lightgreen;
     padding: 3%;
 }
+
+mat-label{
+    color: black;
+}

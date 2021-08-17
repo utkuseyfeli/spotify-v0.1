@@ -1,29 +1,34 @@
 <h3>Authenticate</h3>
 
 <div>
-    <label for="client_id">client_id: </label>
-    <input #client_id id="client_id">
-    <br> <br>
+    
+    <mat-form-field appearance="fill">
+        <mat-label >Client Id: </mat-label>
+        <input matInput #client_id id="client_id">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill" color="warn">
+        <mat-label>Client Secret: </mat-label>
+        <input matInput #client_secret id="client_secret" >
+    </mat-form-field>
 
-    <label for="client_secret">client_secret: </label>
-    <input #client_secret id="client_secret">
     <br> <br>
     
-    <button (click)="authenticate(client_id.value, client_secret.value)">Submit</button>
-    <br>
-    <button (click)="fetchAccessToken()">Fetch Acces Token</button>
-    <br>
-    <button mat-raised-button color="primary" (click)="refreshTokens()">Refresh Tokens</button>
-    <br>
-    <button (click)="getUser()">Get User</button>
+    <button mat-raised-button color="accent" (click)="authenticate(client_id.value, client_secret.value)">Submit</button>
+    &nbsp; 
+    <button mat-raised-button color="accent" (click)="fetchAccessToken()">Fetch Acces Token</button>
+    <br><br>
+    <button mat-raised-button color="accent" (click)="refreshTokens()">Refresh Tokens</button>
+    <br><br>
+    <button mat-raised-button color="accent" (click)="getUser()">Get User</button>
 </div>
 <br>
 <div *ngIf='user'>
-    <h3>User: {{user.display_name}}</h3>
+    <h3>User: <span style="color:purple">{{user.display_name}}</span></h3>
     <p>Country: {{user.country}}</p>
     <p>Id: {{user.id}}</p>
 
-    <button (click)="getCurrentUserPlaylists()">Get Playlists for this user</button>
+    <button mat-raised-button color="accent" (click)="getCurrentUserPlaylists()">Get Playlists for this user</button>
 </div>
 <br>
 <div *ngIf="playlists && user" > 

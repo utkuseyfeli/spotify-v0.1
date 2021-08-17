@@ -1,15 +1,18 @@
 
 <div>
     <h3>Search for stuff</h3>
-    <input matInput type="text" id="searchStr" [(ngModel)]="searchStr" (keyup)="search()" placeholder="Search....">
+    <mat-form-field appearance="fill">
+        <mat-label>Search...</mat-label>
+        <input matInput type="text" id="searchStr" [(ngModel)]="searchStr" (keyup)="search()">
+    </mat-form-field>
+    &nbsp;
+    &nbsp;
     
     <mat-checkbox *ngFor="let item of checkBoxDataList" [(ngModel)]="item.isChecked">
-        {{item.label}}
+        {{item.label}} &nbsp; &nbsp;
     </mat-checkbox>
       
 </div>
-
-
 
 <hr>
 <div *ngIf="albums && checkBoxDataList[0].isChecked">
@@ -36,10 +39,10 @@
     <hr>
 </div>
 
-<div *ngIf="artists && checkBoxDataList[3].isChecked">
+<div *ngIf="artists && checkBoxDataList[3].isChecked" >
     <h3>Artists</h3>
-    <li *ngFor="let artist of artists"> {{artist.name}}
-        
+    <li *ngFor="let artist of artists"> 
+        <a routerLink="/artist/{{artist.id}}">{{artist.name}}</a>
     </li>
     <hr>
 </div>
