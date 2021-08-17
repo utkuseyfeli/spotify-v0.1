@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Album, Artist, PlayList, Track } from '../playlist';
 import { SpotifyService } from '../spotify.service';
+import { debounce, debounceTime, delay, distinctUntilChanged } from "rxjs/operators";
 
 
 @Component({
@@ -16,57 +17,80 @@ export class SearchComponent implements OnInit {
   albums?: Album[];
   tracks?: Track[];
 
-  checked: boolean[] = [false, false, false, false];
-  CONDITIONS = ["album","track", "playlist", "artist"];
+  checkBoxDataList = [
+    {
+      label: 'Albums',
+      id: 'album',
+      isChecked: true
+    },
+    {
+      label: 'Tracks',
+      id: 'track',
+      isChecked: true
+    },
+    {
+      label: 'Playlists',
+      id: 'playlist',
+      isChecked: true
+    },
+    {
+      label: 'Artists',
+      id: 'artist',
+      isChecked: true
+    },
+  ];
 
   constructor(private spotify: SpotifyService) { }
 
   ngOnInit(): void {
   }
 
-  search(){ // interesting way to fetch data save this
+  search(){
     console.log(this.searchStr);
-    // console.log("form value: " + this.checked[0]);
+    this.checkBoxDataList.forEach((value, index)=>{
+      console.log(value);
+    })
 
     let searchCond: string = "";
 
-    for(let i = 0; i < 4; i++){
-      if(this.checked[i]){
-        searchCond += this.CONDITIONS[i];
-        searchCond += ",";
+    this.checkBoxDataList.forEach((value,index)=>{
+      if(value.isChecked){
+        searchCond += value.id + ","
       }
-    }
+    });
 
     searchCond = searchCond.slice(0, -1);
 
-    console.log(searchCond);
+    console.log("search condition is: "+searchCond);
     // make a call to spotify
     if(this.searchStr){
-      this.spotify.search(this.searchStr!, searchCond).subscribe(
+      this.spotify.search(this.searchStr!, searchCond).pipe(
+        debounceTime(2500),
+      ).subscribe(
         res => {
-          console.log(res);
+          // console.log(res);
           console.log(JSON.parse(JSON.stringify(res)));
           let obj = JSON.parse(JSON.stringify(res));
 
-          if(this.checked[0]){
+          if(this.checkBoxDataList[0].isChecked){
             this.albums = obj.albums.items;
           }
 
-          if(this.checked[1]){
+          if(this.checkBoxDataList[1].isChecked){
             this.tracks = obj.tracks.items;
           }
 
-          if(this.checked[2]){
+          if(this.checkBoxDataList[2].isChecked){
             this.playlists = obj.playlists.items;
           }
 
-          if(this.checked[3]){
+          if(this.checkBoxDataList[3].isChecked){
             this.artists = obj.artists.items;
           }
         }
-      )
-    
+      )      
     }
     
   }
 }
+

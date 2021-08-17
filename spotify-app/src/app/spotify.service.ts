@@ -100,8 +100,19 @@ export class SpotifyService {
 
   refreshAccesToken(){
     let refresh_token = localStorage.getItem('refresh_token');
-    let body = "grant_type=refresh_token";
+    let body = "&grant_type=refresh_token";
     body += "&refresh_token=" + refresh_token;
+
+    let auth: string = 'Basic ' + btoa(localStorage.getItem('client_id') + ":" + localStorage.getItem('client_secret'));
+    // console.log("Auth string is: "+ auth);
+
+    this.httpOptions={
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': auth
+      }),
+      observe: 'response' as 'response'
+    }
 
 
     console.log("refresh: " + body);
@@ -113,6 +124,7 @@ export class SpotifyService {
           console.log("Response: "+res);
           let response: RefreshRespObject = res.body as RefreshRespObject;
           // save the new acces token
+          localStorage.setItem("acces_token", response.access_token);
         }
       )
   }
