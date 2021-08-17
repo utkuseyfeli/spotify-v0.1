@@ -15,6 +15,7 @@ export class SearchComponent implements OnInit {
 
   searchStr?: string;
   serchReal?: string;
+  searchCond: string = "";
   playlists?: PlayList[];
   artists?: Artist[];
   albums?: Album[];
@@ -57,7 +58,7 @@ export class SearchComponent implements OnInit {
         if(!ser){
           this.artists = undefined;
         }else{
-          this.spotify.search(ser, "artist").subscribe(
+          this.spotify.search(ser, this.searchCond).subscribe(
             res => {
               // console.log(res);
               console.log(JSON.parse(JSON.stringify(res)));
@@ -93,15 +94,15 @@ export class SearchComponent implements OnInit {
     //   console.log(value);
     // })
 
-    let searchCond: string = "";
+    this.searchCond = "";
     this.checkBoxDataList.forEach((value,index)=>{
       if(value.isChecked){
-        searchCond += value.id + ","
+        this.searchCond += value.id + ","
       }
     });
-    searchCond = searchCond.slice(0, -1);
+    this.searchCond = this.searchCond.slice(0, -1);
 
-    console.log("search condition is: "+searchCond);
+    console.log("search condition is: "+this.searchCond);
 
     this.searchTerms.next(this.searchStr);
     
