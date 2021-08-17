@@ -196,7 +196,7 @@ export class SpotifyService {
     return this.http.get<Album[]>(baseUrl, httpOptions);
   }
 
-  searchPlaylist(query: string): Observable<PlaylistRespObject>{
+  searchPlaylist(query: string): Observable<PlaylistRespObject[]>{
     let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
     let httpOptions = {
       headers: new HttpHeaders(
@@ -213,6 +213,6 @@ export class SpotifyService {
     baseUrl += "&limit=15";
     baseUrl += "&offset=0";
 
-    return this.http.get<PlaylistRespObject>(baseUrl, httpOptions);
+    return this.http.get<PlaylistRespObject[]>(baseUrl, httpOptions);
   }
 }

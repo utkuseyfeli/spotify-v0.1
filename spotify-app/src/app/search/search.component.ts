@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Album, Artist, PlayList, Track } from '../playlist';
 import { SpotifyService } from '../spotify.service';
-import { debounce, debounceTime, delay, distinctUntilChanged, switchMap } from "rxjs/operators";
+import { debounce, debounceTime, delay, distinctUntilChanged, map, switchMap } from "rxjs/operators";
 import { Observable, Subject } from 'rxjs';
 import { PlaylistRespObject } from '../response';
 
@@ -14,12 +14,13 @@ import { PlaylistRespObject } from '../response';
 export class SearchComponent implements OnInit {
 
   searchStr?: string;
+  serchReal?: string;
   playlists?: PlayList[];
   artists?: Artist[];
-  albums?: Observable<Album[]>;
+  albums?: Album[];
   tracks?: Track[];
   private searchTerms = new Subject<string>();
-  response!: Observable<PlaylistRespObject>;
+  response!: Observable<JSON>;
 
   checkBoxDataList = [
     {
@@ -47,12 +48,43 @@ export class SearchComponent implements OnInit {
   constructor(private spotify: SpotifyService) { }
 
   ngOnInit(): void {
-    this.albums = this.searchTerms.pipe(
+    this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap((term: string) => this.spotify.searchAlbum(term)),
-      
+    ).subscribe(
+      ser => {
+        console.log("serr " + ser);
+        if(!ser){
+          this.artists = undefined;
+        }else{
+          this.spotify.search(ser, "artist").subscribe(
+            res => {
+              // console.log(res);
+              console.log(JSON.parse(JSON.stringify(res)));
+              let obj = JSON.parse(JSON.stringify(res));
+              
+              if(this.checkBoxDataList[0].isChecked){
+                this.albums = obj.albums.items;
+              }
+    
+              if(this.checkBoxDataList[1].isChecked){
+                this.tracks = obj.tracks.items;
+              }
+    
+              if(this.checkBoxDataList[2].isChecked){
+                this.playlists = obj.playlists.items;
+              }
+    
+              if(this.checkBoxDataList[3].isChecked){
+                this.artists = obj.artists.items;
+              }
+              
+            }
+          )
+        }
+      }
     )
+
   }
 
   search(){
@@ -74,7 +106,8 @@ export class SearchComponent implements OnInit {
     this.searchTerms.next(this.searchStr);
     
     // make a call to spotify
-    // if(this.searchStr){
+    console.log("asssssss " + this.serchReal)
+    // if(this.serchReal){
     //   this.spotify.search(this.searchStr!, searchCond).pipe(
     //     debounceTime(2500),
     //   ).subscribe(
