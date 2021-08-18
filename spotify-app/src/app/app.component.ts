@@ -11,13 +11,9 @@ export class AppComponent implements OnInit {
   authenticated?: boolean;
 
   isAuthenticated() {
-    if(localStorage.getItem('refresh_token')){
-      this.authenticated = true;
-    }
   }
 
   ngOnInit(){
-    this.isAuthenticated();
   }
 
 }

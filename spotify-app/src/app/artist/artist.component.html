@@ -1,7 +1,7 @@
-<div *ngIf="artist" style="width: max-content; padding: 2%;">
-    <h2>Artist Profile</h2>
 
-    <table style="align-items: center; border:2px solid purple; width: max-content;">
+<mat-card style="background-color: lightgreen; width: fit-content; margin: auto; color: black;" *ngIf="artist">
+    <h2>Artist Profile</h2>
+    <table style="margin: auto; border:2px solid purple; width: 100%;">
         <tr>
             <td>
                 <img src="{{artist.images[picSize || 1].url}}" alt="" >
@@ -13,4 +13,6 @@
             </td>
         </tr>
     </table>
-</div>
+</mat-card>
+    
+
