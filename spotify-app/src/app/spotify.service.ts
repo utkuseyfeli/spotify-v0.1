@@ -174,6 +174,9 @@ export class SpotifyService {
     baseUrl += "&offset=0";
 
     return this.http.get<JSON>(baseUrl, httpOptions);
+    // .pipe(
+    //   map()
+    
   }
 
   getArtist(id: string): Observable<Artist>{

@@ -8,7 +8,8 @@
     &nbsp;
     &nbsp;
     
-    <mat-checkbox *ngFor="let item of checkBoxDataList" [(ngModel)]="item.isChecked">
+    <!-- this is not correct -->
+    <mat-checkbox *ngFor="let item of checkBoxDataList" [(ngModel)]="item.isChecked"> 
         {{item.label}} &nbsp; &nbsp;
     </mat-checkbox>
       
