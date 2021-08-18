@@ -1,5 +1,16 @@
-<div *ngIf="artist">
-    {{artist.name}}
-    <img src="{{artist.images[1].url}}" alt="" >
-    <p>{{artist.followers.total}}</p>
+<div *ngIf="artist" style="width: max-content; padding: 2%;">
+    <h2>Artist Profile</h2>
+
+    <table style="align-items: center; border:2px solid purple; width: max-content;">
+        <tr>
+            <td>
+                <img src="{{artist.images[picSize || 1].url}}" alt="" >
+            </td>
+            <td style="width: max-content;">
+                <h3>{{artist.name}}</h3>
+                <h4>Followers: {{artist.followers.total}}</h4>
+                <h4>Popularity: {{artist.popularity}}</h4>
+            </td>
+        </tr>
+    </table>
 </div>

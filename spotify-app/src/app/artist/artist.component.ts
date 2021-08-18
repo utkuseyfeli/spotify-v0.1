@@ -12,6 +12,7 @@ export class ArtistComponent implements OnInit {
 
   artist?: Artist;
   @Input() id?: string;
+  @Input() picSize?: number;
 
   constructor(private spotify:SpotifyService, private route: ActivatedRoute) { }
 
@@ -24,7 +25,6 @@ export class ArtistComponent implements OnInit {
     if(!this.id){
       this.id = this.route.snapshot.paramMap.get('id')!;
     }
-    
     
     let url = "https://api.spotify.com/v1/artists/" + this.id;
 
