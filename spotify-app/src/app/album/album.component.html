@@ -1,1 +1,18 @@
-<p>album works!</p>
+<div *ngIf="album">
+    <h3>Album name: {{album.name}}</h3>
+    <h4>Artists: </h4>
+    <div *ngFor="let artist of album.artists">
+        <app-artist [id] = "artist.id"></app-artist>
+    </div>
+
+    <h4>Songs in the album: </h4>
+    <div *ngFor="let track of album.tracks">
+        <li>
+            <a routerLink="/track/{{track.id}}">{{track.name}}</a>
+        </li>
+    </div>
+</div>
+
+<div>
+    <app-search></app-search>
+</div>

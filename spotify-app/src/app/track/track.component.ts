@@ -20,12 +20,14 @@ export class TrackComponent implements OnInit {
 
   getTrack(){
     const id = this.route.snapshot.paramMap.get('id');
-    
-    this.spotify.getTrack(id!).subscribe(
-      res => {
+
+    let url = "https://api.spotify.com/v1/tracks/" + id;
+    url += "?market=TR";
+
+    this.spotify.get(url).subscribe(
+      (res: Track) => {
         this.track = res;
       }
     )
   }
-
 }

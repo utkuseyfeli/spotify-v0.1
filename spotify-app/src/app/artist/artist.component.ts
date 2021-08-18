@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Artist } from '../playlist';
 import { SpotifyService } from '../spotify.service';
@@ -11,6 +11,7 @@ import { SpotifyService } from '../spotify.service';
 export class ArtistComponent implements OnInit {
 
   artist?: Artist;
+  @Input() id?: string;
 
   constructor(private spotify:SpotifyService, private route: ActivatedRoute) { }
 
@@ -20,13 +21,16 @@ export class ArtistComponent implements OnInit {
   }
 
   getArtist(){
-    const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
+    if(!this.id){
+      this.id = this.route.snapshot.paramMap.get('id')!;
+    }
+    
+    
+    let url = "https://api.spotify.com/v1/artists/" + this.id;
 
-    this.spotify.getArtist(id!).subscribe(
-      res => {
+    this.spotify.get(url).subscribe(
+      (res: Artist) => {
         console.log(res);
-        // let obj = JSON.parse(JSON.stringify(res));
 
         this.artist = res;
         console.log(this.artist);

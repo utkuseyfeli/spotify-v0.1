@@ -23,6 +23,7 @@ export interface Album{
     release_date: string;
     images: Image[];
     id: string;
+    tracks: Track[];
 }
 
 export interface Track{

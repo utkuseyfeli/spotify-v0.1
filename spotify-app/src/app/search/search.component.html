@@ -18,8 +18,8 @@
 <hr>
 <div *ngIf="albums && checkBoxDataList[0].isChecked">
     <h3>Albums</h3>
-    <li *ngFor="let album of albums"> {{album.name}}
-        
+    <li *ngFor="let album of albums"> 
+        <a routerLink="/album/{{album.id}}">{{album.name}}</a>
     </li>
     <hr>
 </div>
@@ -34,8 +34,8 @@
 
 <div *ngIf="playlists && checkBoxDataList[2].isChecked">
     <h3>Playlists</h3>
-    <li *ngFor="let playlist of playlists"> {{playlist.name}}
-
+    <li *ngFor="let playlist of playlists"> 
+        <a routerLink="/playlist/{{playlist.id}}">{{playlist.name}}</a>
     </li>
     <hr>
 </div>

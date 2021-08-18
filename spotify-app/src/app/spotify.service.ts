@@ -6,6 +6,8 @@ import { ConditionalExpr } from '@angular/compiler';
 import { PlaylistRespObject, RefreshRespObject, RespObject } from './response';
 import { SpotifyUser } from './user';
 import { Album, Artist, PlayList, Track } from './playlist';
+import { map } from 'rxjs/operators';
+import { ValueTransformer } from '@angular/compiler/src/util';
 
 @Injectable({
   providedIn: 'root'
@@ -179,22 +181,7 @@ export class SpotifyService {
     
   }
 
-  getArtist(id: string): Observable<Artist>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
-      headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
-      )
-    }
-
-    let url = "https://api.spotify.com/v1/artists/" + id;
-
-    return this.http.get<Artist>(url, httpOptions);
-  }
-
-  getAlbum(id: string): Observable<Album>{
+  getAlbum(id: string): Observable<any>{
     let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
     let httpOptions = {
       headers: new HttpHeaders(
@@ -207,7 +194,14 @@ export class SpotifyService {
     let url = "https://api.spotify.com/v1/albums/" + id;
     url += "?market=TR";
 
-    return this.http.get<Album>(url, httpOptions);
+    // niceeeeee
+    return this.http.get<any>(url, httpOptions).pipe(
+      map(value => {
+        let data = JSON.parse(JSON.stringify(value));  
+        data.tracks = JSON.parse(JSON.stringify(value.tracks.items));
+        return data;
+      })
+    );
   }
 
   getPlaylist(id: string): Observable<PlayList>{
@@ -226,7 +220,7 @@ export class SpotifyService {
     return this.http.get<PlayList>(url, httpOptions);
   }
 
-  getTrack(id:string): Observable<Track>{
+  get(url: string): Observable<any>{
     let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
     let httpOptions = {
       headers: new HttpHeaders(
@@ -235,11 +229,6 @@ export class SpotifyService {
          }
       )
     }
-
-    let url = "https://api.spotify.com/v1/tracks/" + id;
-    url += "?market=TR";
-
-    return this.http.get<Track>(url, httpOptions);
+    return this.http.get<any>(url, httpOptions);
   }
-
 }
