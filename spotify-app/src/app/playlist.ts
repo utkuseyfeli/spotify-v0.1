@@ -1,8 +1,14 @@
+import { SpotifyUser } from "./user";
+
 export interface PlayList{
     collaborative: boolean;
     id: string;
     name: string;
     description: string;
+    images: Image[];
+    owner: SpotifyUser;
+    tracks: Track[];
+    followers: number;
 }
 
 export interface Artist{

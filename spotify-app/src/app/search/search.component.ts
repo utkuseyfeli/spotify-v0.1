@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Album, Artist, PlayList, Track } from '../playlist';
 import { SpotifyService } from '../spotify.service';
-import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs/operators";
 import { Observable, Subject } from 'rxjs';
 
 @Component({

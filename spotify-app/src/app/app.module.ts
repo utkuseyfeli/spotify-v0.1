@@ -16,6 +16,10 @@ import { ArtistComponent } from './artist/artist.component';
 import { AlbumComponent } from './album/album.component';
 import { TrackComponent } from './track/track.component';
 import { PlaylistComponent } from './playlist/playlist.component';
+import {MatListModule} from '@angular/material/list';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
+
 
 @NgModule({
   declarations: [
@@ -36,7 +40,10 @@ import { PlaylistComponent } from './playlist/playlist.component';
     FormsModule,
     MatInputModule,
     MatCheckboxModule,
-    MatButtonModule
+    MatButtonModule,
+    MatListModule,
+    MatExpansionModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

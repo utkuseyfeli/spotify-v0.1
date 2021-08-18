@@ -1,7 +1,6 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { RespObject } from '../response';
 import { SpotifyService } from '../spotify.service';
-import {MatButtonModule} from '@angular/material/button';
 import { SpotifyUser } from '../user';
 import { PlayList } from '../playlist';
 

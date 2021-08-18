@@ -6,7 +6,7 @@ import { ConditionalExpr } from '@angular/compiler';
 import { PlaylistRespObject, RefreshRespObject, RespObject } from './response';
 import { SpotifyUser } from './user';
 import { Album, Artist, PlayList, Track } from './playlist';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ValueTransformer } from '@angular/compiler/src/util';
 
 @Injectable({
@@ -175,7 +175,9 @@ export class SpotifyService {
     baseUrl += "&limit=15";
     baseUrl += "&offset=0";
 
-    return this.http.get<JSON>(baseUrl, httpOptions);
+    return this.http.get<JSON>(baseUrl, httpOptions).pipe(
+      
+    );
     // .pipe(
     //   map()
     
@@ -204,7 +206,7 @@ export class SpotifyService {
     );
   }
 
-  getPlaylist(id: string): Observable<PlayList>{
+  getPlaylist(id: string): Observable<any>{
     let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
     let httpOptions = {
       headers: new HttpHeaders(
@@ -217,7 +219,14 @@ export class SpotifyService {
     let url = "https://api.spotify.com/v1/playlists/" + id;
     url += "?market=TR";
 
-    return this.http.get<PlayList>(url, httpOptions);
+    return this.http.get<any>(url, httpOptions).pipe(
+      // map( value=>{
+      //   let data = JSON.parse(JSON.stringify(value));
+      //   data.tracks = JSON.parse(JSON.stringify(value.tracks.items));
+      //   data.followers = JSON.parse(JSON.stringify(value.followers.total));
+      //   return data;
+      // })
+    );
   }
 
   get(url: string): Observable<any>{

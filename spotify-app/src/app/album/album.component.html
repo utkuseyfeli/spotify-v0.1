@@ -1,14 +1,20 @@
-<div *ngIf="album">
+<div *ngIf="album" style="width: 700px;">
     <h3>Album name: {{album.name}}</h3>
     <h4>Artists: </h4>
-    <div *ngFor="let artist of album.artists">
+    <div *ngFor="let artist of album.artists" style="width: max-content;">
         <app-artist [id] = "artist.id" [picSize] = 2></app-artist>
     </div>
 
     <h4>Songs in the album: </h4>
-    <div *ngFor="let track of album.tracks">
-        <li>
-            <a routerLink="/track/{{track.id}}">{{track.name}}</a>
-        </li>
+    <div *ngFor="let track of album.tracks" style="width: max-content; margin: 0%; padding-left:50px;">
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{track.name}}
+            </mat-panel-title>
+            <mat-panel-description></mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-track [id]="track.id"></app-track>
+        </mat-expansion-panel>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Track } from '../playlist';
 import { SpotifyService } from '../spotify.service';
@@ -11,6 +11,7 @@ import { SpotifyService } from '../spotify.service';
 export class TrackComponent implements OnInit {
 
   track?: Track;
+  @Input() id?: string;
 
   constructor(private spotify:SpotifyService, private route: ActivatedRoute) { }
 
@@ -19,9 +20,12 @@ export class TrackComponent implements OnInit {
   }
 
   getTrack(){
-    const id = this.route.snapshot.paramMap.get('id');
 
-    let url = "https://api.spotify.com/v1/tracks/" + id;
+    if(!this.id){
+      this.id = this.route.snapshot.paramMap.get('id')!;
+    }
+
+    let url = "https://api.spotify.com/v1/tracks/" + this.id;
     url += "?market=TR";
 
     this.spotify.get(url).subscribe(
