@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 import { Album } from '../playlist';
 import { SpotifyService } from '../spotify.service';
 
@@ -24,10 +25,14 @@ export class AlbumComponent implements OnInit {
     let url = "https://api.spotify.com/v1/albums/" + id;
     url += "?market=TR";
 
-    this.spotify.getAlbum(id!).subscribe(
+    this.spotify.get(url).pipe(
+      map(value => {
+        let data = JSON.parse(JSON.stringify(value));  
+        data.tracks = JSON.parse(JSON.stringify(value.tracks.items));
+        return data;
+      })
+    ).subscribe(
       (res) => {
-        
-        console.log(res);
         this.album = res;
       }
     );

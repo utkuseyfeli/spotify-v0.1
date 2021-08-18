@@ -19,7 +19,10 @@ export class PlaylistComponent implements OnInit {
 
     const id = this.route.snapshot.paramMap.get('id')!;
 
-    this.spotify.getPlaylist(id).pipe(
+    let url = "https://api.spotify.com/v1/playlists/" + id;
+    url += "?market=TR";
+
+    this.spotify.get(url).pipe(
       map(value => {
         let data = JSON.parse(JSON.stringify(value));
         data.tracks = JSON.parse(JSON.stringify(value.tracks.items));

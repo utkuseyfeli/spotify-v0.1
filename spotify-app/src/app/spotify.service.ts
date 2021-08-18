@@ -183,52 +183,6 @@ export class SpotifyService {
     
   }
 
-  getAlbum(id: string): Observable<any>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
-      headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
-      )
-    }
-
-    let url = "https://api.spotify.com/v1/albums/" + id;
-    url += "?market=TR";
-
-    // niceeeeee
-    return this.http.get<any>(url, httpOptions).pipe(
-      map(value => {
-        let data = JSON.parse(JSON.stringify(value));  
-        data.tracks = JSON.parse(JSON.stringify(value.tracks.items));
-        return data;
-      })
-    );
-  }
-
-  getPlaylist(id: string): Observable<any>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
-      headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
-      )
-    }
-
-    let url = "https://api.spotify.com/v1/playlists/" + id;
-    url += "?market=TR";
-
-    return this.http.get<any>(url, httpOptions).pipe(
-      // map( value=>{
-      //   let data = JSON.parse(JSON.stringify(value));
-      //   data.tracks = JSON.parse(JSON.stringify(value.tracks.items));
-      //   data.followers = JSON.parse(JSON.stringify(value.followers.total));
-      //   return data;
-      // })
-    );
-  }
-
   get(url: string): Observable<any>{
     let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
     let httpOptions = {
