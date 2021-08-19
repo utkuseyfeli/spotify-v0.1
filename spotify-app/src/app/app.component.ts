@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+/// <reference types="@types/spotify-web-playback-sdk"/>
 
 @Component({
   selector: 'app-root',
@@ -7,13 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'spotify-app';
-
-  authenticated?: boolean;
-
-  isAuthenticated() {
-  }
-
+  
   ngOnInit(){
+    
   }
-
+  
 }

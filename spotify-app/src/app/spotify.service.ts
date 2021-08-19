@@ -184,9 +184,6 @@ export class SpotifyService {
         return this.http.get<any>(baseUrl, httpOptions);
       })
     );
-    // .pipe(
-    //   map()
-    
   }
 
   get(url: string): Observable<any>{
@@ -204,8 +201,23 @@ export class SpotifyService {
         if(err.status == 401){
           await this.refreshAccesToken();
         }
-        return this.get(url);
+        return this.http.get<any>(url, httpOptions);
+        // window.location.reload();
       })
     );
   }
+
+  put(url: string): Observable<any>{
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
+
+    return this.http.put<any>(url, httpOptions);
+  }
+
 }
