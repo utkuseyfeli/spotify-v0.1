@@ -33,6 +33,7 @@ export class AlbumComponent implements OnInit {
       })
     ).subscribe(
       (res) => {
+        console.log(res);
         this.album = res;
       }
     );

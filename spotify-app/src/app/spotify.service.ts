@@ -123,7 +123,7 @@ export class SpotifyService {
     this.http.post<RefreshRespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions)
       .subscribe(
         res => {
-          console.log("Response: "+res);
+          console.log("Response: ",res);
           let response: RefreshRespObject = res.body as RefreshRespObject;
           // save the new acces token
           localStorage.setItem("acces_token", response.access_token);
@@ -176,7 +176,13 @@ export class SpotifyService {
     baseUrl += "&offset=0";
 
     return this.http.get<any>(baseUrl, httpOptions).pipe(
-      
+      catchError(async (err) => {
+        console.log("err: ", err);
+        if(err.status == 401){
+          await this.refreshAccesToken();
+        }
+        return this.http.get<any>(baseUrl, httpOptions);
+      })
     );
     // .pipe(
     //   map()
@@ -192,6 +198,14 @@ export class SpotifyService {
          }
       )
     }
-    return this.http.get<any>(url, httpOptions);
+    return this.http.get<any>(url, httpOptions).pipe(
+      catchError(async (err) => {
+        console.log("err: ", err);
+        if(err.status == 401){
+          await this.refreshAccesToken();
+        }
+        return this.get(url);
+      })
+    );
   }
 }

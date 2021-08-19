@@ -3,6 +3,7 @@ import { RespObject } from '../response';
 import { SpotifyService } from '../spotify.service';
 import { SpotifyUser } from '../user';
 import { PlayList } from '../playlist';
+import { catchError } from 'rxjs/operators';
 
 
 @Component({
@@ -19,7 +20,15 @@ export class AuthenticateComponent implements OnInit, OnChanges {
   constructor(private spotify: SpotifyService) { }
 
   ngOnInit(): void {
-    
+    let url = "https://api.spotify.com/v1/users/" + "fnpx53326g03vygrg2ikesxci";
+    this.spotify.get(url).pipe(
+      catchError((err) => {
+        if(err.status == 401){
+          this.spotify.refreshAccesToken();
+        }
+        return this.spotify.get(url);
+      })
+    )
   }
 
   ngOnChanges(){}
@@ -32,8 +41,16 @@ export class AuthenticateComponent implements OnInit, OnChanges {
     this.spotify.refreshAccesToken();
   }
 
-  async getUser(){
-    this.spotify.getUser().subscribe(
+  getUser(){
+    this.spotify.getUser().pipe(
+      catchError(async (err) => {
+        console.log("err: ", err);
+        if(err.status == 401){
+          await this.spotify.refreshAccesToken();
+        }
+        return this.spotify.getUser();
+      })
+    ).subscribe(
       res => {
         console.log(res);
         this.user = res as SpotifyUser;

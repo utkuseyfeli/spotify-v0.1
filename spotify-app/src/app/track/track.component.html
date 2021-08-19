@@ -1,13 +1,20 @@
-<div *ngIf="track">
-    <mat-card style="background-color: lightgreen;">
-        <figure>
-            <figcaption style="color: black; text-align: center; font-size: 16px;">Listen to the {{track.name}} preview:</figcaption>
-            <audio
+<div *ngIf="track" style="margin: auto; width: max-content;">
+        <mat-card style="background-color: lightgreen; margin: auto; width: max-content;">
+            <!-- <figure>
+                <figcaption style="color: black; text-align: center; font-size: 16px;">Listen to the {{track.name}} preview:</figcaption>
+                <audio
                 controls
                 src="{{track.preview_url}}">
-                    Your browser does not support the
-                    <code>audio</code> element.
-            </audio>
-        </figure>
-    </mat-card>
+                Your browser does not support the
+                <code>audio</code> element.
+                </audio>
+            </figure> -->
+            
+                <iframe [src]="url" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            
+        </mat-card>
+
+        
 </div>
+
+

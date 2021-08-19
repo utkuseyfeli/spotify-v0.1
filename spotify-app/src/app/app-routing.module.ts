@@ -15,7 +15,8 @@ const routes: Routes = [
   {path: "artist/:id", component:ArtistComponent},
   {path: "track/:id", component:TrackComponent},
   {path: "album/:id", component:AlbumComponent},
-  {path: "playlist/:id", component:PlaylistComponent}
+  {path: "playlist/:id", component:PlaylistComponent},
+  {path: "", redirectTo: "/authenticate", pathMatch: 'full'}
 ];
 
 @NgModule({

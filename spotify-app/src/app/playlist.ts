@@ -30,6 +30,7 @@ export interface Album{
     images: Image[];
     id: string;
     tracks: Track[];
+    label: string;
 }
 
 export interface Track{
@@ -39,6 +40,7 @@ export interface Track{
     popularity: number;
     id: string;
     preview_url: string;
+    url: string;
 }
 
 export interface Image{

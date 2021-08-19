@@ -30,7 +30,7 @@ import {MatCardModule} from '@angular/material/card';
     ArtistComponent,
     AlbumComponent,
     TrackComponent,
-    PlaylistComponent
+    PlaylistComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +43,7 @@ import {MatCardModule} from '@angular/material/card';
     MatButtonModule,
     MatListModule,
     MatExpansionModule,
-    MatCardModule
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
