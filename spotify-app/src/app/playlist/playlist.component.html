@@ -16,7 +16,7 @@
         </tr>
     </table>
     
-    <h4 *ngIf='playlist.description != ""'> Description: {{playlist.description}}</h4>
+    <h4 *ngIf='playlist.description !== ""'> Description: {{playlist.description}}</h4>
 
     <mat-expansion-panel hideToggle *ngFor="let track of playlist.tracks" style="margin: auto; margin-bottom: 5px; width: 80%;">
         <mat-expansion-panel-header>
