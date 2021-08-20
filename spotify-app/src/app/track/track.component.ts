@@ -1,4 +1,3 @@
-///  <reference types="@types/spotify-web-playback-sdk"/>
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
