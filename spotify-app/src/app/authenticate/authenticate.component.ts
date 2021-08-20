@@ -5,6 +5,7 @@ import { SpotifyUser } from '../user';
 import { PlayList } from '../playlist';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,11 +19,15 @@ export class AuthenticateComponent implements OnInit, OnChanges {
   user?: SpotifyUser;
   playlists?: PlayList[];
 
-  constructor(private spotify: SpotifyService) { }
+  constructor(private spotify: SpotifyService, public router: Router) { }
 
   ngOnInit(): void {
     console.log("ngoninit");
+    this.fetchAccessToken();
     this.isAuthenticated();
+    if(this.spotify.isAuthenticated){
+      this.router.navigate(["/search"]);
+    }
   }
 
   ngOnChanges(){}
@@ -89,7 +94,9 @@ export class AuthenticateComponent implements OnInit, OnChanges {
     console.log("is auth");
     let url = "https://api.spotify.com/v1/users/" + "fnpx53326g03vygrg2ikesxci";
     this.spotify.get(url).subscribe();
+  }
 
-    
+  change(){
+    this.spotify.isAuthenticated = !this.spotify.isAuthenticated;
   }
 }

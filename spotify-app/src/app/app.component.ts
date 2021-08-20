@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SpotifyService } from './spotify.service';
 /// <reference types="@types/spotify-web-playback-sdk"/>
 
 @Component({
@@ -9,8 +10,9 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'spotify-app';
   
+  constructor(public spotify: SpotifyService){}
+
   ngOnInit(){
-    
   }
   
 }

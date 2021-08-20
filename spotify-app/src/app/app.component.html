@@ -1,23 +1,2 @@
-<div style="background-color: black; color: whitesmoke; padding: 1%; border-bottom:2px solid purple;">
-    
-    <table style="width: 100%;">
-        <tr>
-            <td>
-                <h1>Spotify</h1>
-            </td>
-            <td style="float: right;">
-                <button mat-raised-button routerLink="/authenticate"> Authenticate</button>
-            </td>
-            <td style="float: right; padding: 7px;">
-            </td>
-            <td style="float: right;">
-                <button mat-raised-button routerLink="/search">Search</button>
-                
-            </td>
-            
-        </tr>
-    </table>
-    <hr>
-</div>
-
+<app-header [isAuthenticated] ="this.spotify.isAuthenticated"></app-header>
 <router-outlet></router-outlet>

@@ -85,6 +85,8 @@ export class SearchComponent implements OnInit {
     //   }
     // )
 
+    this.isAuthenticated();
+
     this.searchTerms.pipe(
       debounceTime(300),
       // distinctUntilChanged(),
@@ -150,6 +152,11 @@ export class SearchComponent implements OnInit {
 
     // console.log("search condition is: "+this.searchCond);
     this.searchTerms.next(this.searchStr);
+  }
+
+  isAuthenticated(){
+    let url = "https://api.spotify.com/v1/users/" + "fnpx53326g03vygrg2ikesxci";
+    this.spotify.get(url).subscribe();
   }
 }
 

@@ -19,7 +19,7 @@ export class SpotifyService {
   baseUrl: string = "https://accounts.spotify.com/api";
   respObject?: RespObject;
   user?: SpotifyUser;
-  isAuthenticated?: boolean;
+  isAuthenticated: boolean = false;
 
   httpOptions = {
     headers: new HttpHeaders(
@@ -81,8 +81,19 @@ export class SpotifyService {
     
     console.log("this is headers get authorization: " + this.httpOptions.headers.get('Authorization'));
 
-    this.http.post<RespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions)
-      .subscribe(
+    this.isAuthenticated = true;
+
+    this.http.post<RespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions).pipe(
+      catchError(
+        err => {
+          if(err.status == 401){
+            this.isAuthenticated = false;
+          }
+          let empty: any;
+          return of(empty);
+        }
+      )
+    ).subscribe(
         res => {
           console.log("response: "+ res);
           console.log("response body: "+res.body);
@@ -122,7 +133,18 @@ export class SpotifyService {
     console.log("refresh: " + body);
     // this.fetchRespOpbject(body);
 
-    this.http.post<RefreshRespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions)
+    this.isAuthenticated = true;
+    this.http.post<RefreshRespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions).pipe(
+      catchError(
+        err => {
+          if(err.status == 401){
+            this.isAuthenticated = false;
+          }
+          let empty: any;
+          return of(empty);
+        }
+      )
+    )
       .subscribe(
         res => {
           console.log("Response: ",res);
@@ -178,13 +200,13 @@ export class SpotifyService {
     baseUrl += "&offset=0";
 
     return this.http.get<any>(baseUrl, httpOptions).pipe(
-      catchError(async (err) => {
-        console.log("err: ", err);
-        if(err.status == 401){
-          this.router.navigate(['/authenticate']);
-        }
-        return of(undefined);
-      })
+      // catchError(async (err) => {
+      //   console.log("err: ", err);
+      //   if(err.status == 401){
+      //     this.router.navigate(['/authenticate']);
+      //   }
+      //   return of(undefined);
+      // })
     );
   }
 
@@ -198,6 +220,7 @@ export class SpotifyService {
       )
     }
 
+    this.isAuthenticated = true;
     return this.http.get<any>(url, httpOptions).pipe(
       catchError((err) => {
         console.log("err: ", err);
