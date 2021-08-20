@@ -36,7 +36,7 @@ export class SpotifyService {
     this.authUrl += "?client_id=" + client_id;
     this.authUrl += "&response_type=code";
     this.authUrl += "&redirect_uri=http://localhost:4200/authenticate";
-    this.authUrl += "&show_dialog=true";
+    this.authUrl += "&show_dialog=false";
 
     /** Giving all of the permissions */
     this.authUrl += "&scope=ugc-image-upload user-read-recently-played user-top-read user-read-playback-position user-read-playback-state user-modify-playback-state user-read-currently-playing ";
@@ -109,6 +109,8 @@ export class SpotifyService {
           console.log("response object refresh token: "+this.respObject?.refresh_token);
           localStorage.setItem('acces_token', this.respObject.access_token);
           localStorage.setItem("refresh_token", this.respObject.refresh_token);
+          this.router.navigate(['/authenticate']);
+          window.location.reload();
         }
       );
   }
@@ -144,13 +146,13 @@ export class SpotifyService {
           return of(empty);
         }
       )
-    )
-      .subscribe(
+    ).subscribe(
         res => {
           console.log("Response: ",res);
           let response: RefreshRespObject = res.body as RefreshRespObject;
           // save the new acces token
           localStorage.setItem("acces_token", response.access_token);
+          this.router.navigate(['/search']);
         }
       )
   }
@@ -200,13 +202,14 @@ export class SpotifyService {
     baseUrl += "&offset=0";
 
     return this.http.get<any>(baseUrl, httpOptions).pipe(
-      // catchError(async (err) => {
-      //   console.log("err: ", err);
-      //   if(err.status == 401){
-      //     this.router.navigate(['/authenticate']);
-      //   }
-      //   return of(undefined);
-      // })
+      catchError((err) => {
+        console.log("err: ", err);
+        if(err.status == 401){
+          this.isAuthenticated = false;
+          this.router.navigate(['/authenticate']);
+        }
+        return of(undefined);
+      })
     );
   }
 
@@ -220,16 +223,9 @@ export class SpotifyService {
       )
     }
 
-    this.isAuthenticated = true;
+    console.log("httpoptions", auth);
+
     return this.http.get<any>(url, httpOptions).pipe(
-      catchError((err) => {
-        console.log("err: ", err);
-        if(err.status == 401){
-          this.isAuthenticated = false;
-          this.router.navigate(['/authenticate']);
-        }
-        return of(undefined);
-      })
     );
   }
 

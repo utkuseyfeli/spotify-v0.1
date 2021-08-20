@@ -16,7 +16,7 @@
     &nbsp; 
     <button mat-raised-button color="accent" (click)="fetchAccessToken()">Fetch Acces Token</button>
     <br><br>
-    <button mat-raised-button color="accent" (click)="refreshTokens()">Refresh Tokens</button>
+    <button mat-raised-button color="accent" (click)="refreshTokens()" *ngIf="refresh_token">Refresh Tokens</button>
     <br><br>
     <button mat-raised-button color="accent" (click)="getUser()">Get User</button>
 </div>

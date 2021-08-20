@@ -13,24 +13,21 @@ import { Router } from '@angular/router';
   templateUrl: './authenticate.component.html',
   styleUrls: ['./authenticate.component.css']
 })
-export class AuthenticateComponent implements OnInit, OnChanges {
+export class AuthenticateComponent implements OnInit {
 
   respObject?: RespObject;
   user?: SpotifyUser;
   playlists?: PlayList[];
+  refresh_token?: string;
+  
 
   constructor(private spotify: SpotifyService, public router: Router) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     console.log("ngoninit");
     this.fetchAccessToken();
     this.isAuthenticated();
-    if(this.spotify.isAuthenticated){
-      this.router.navigate(["/search"]);
-    }
   }
-
-  ngOnChanges(){}
 
   authenticate(client_id: string, client_secret: string){
     this.spotify.authenticate(client_id, client_secret);
@@ -91,9 +88,37 @@ export class AuthenticateComponent implements OnInit, OnChanges {
   }
 
   isAuthenticated(){
-    console.log("is auth");
-    let url = "https://api.spotify.com/v1/users/" + "fnpx53326g03vygrg2ikesxci";
-    this.spotify.get(url).subscribe();
+    let client_id = localStorage.getItem('client_id');
+    let client_secret = localStorage.getItem('client_secret');
+    let acces_token = localStorage.getItem('acces_token');
+    this.refresh_token = localStorage.getItem('refresh_token')!;
+
+    if(client_id && client_secret && acces_token && this.refresh_token){
+      this.spotify.isAuthenticated = true;
+    }
+
+    if(!acces_token || !this.refresh_token){
+      this.spotify.isAuthenticated = false;
+    }
+
+    if(this.spotify.isAuthenticated){
+      this.router.navigate(['/search']);
+    }
+
+    // this part is going to be for expired tokens
+    // console.log("is auth");
+    // let url = "https://api.spotify.com/v1/albums/" + "0sNOF9WDwhWunNAHPD3Baj";
+    // this.spotify.get(url).subscribe(
+    //   res => {
+    //     console.log("error statuss: " , res.status)
+    //     if(res.status == 401){
+    //       this.spotify.isAuthenticated = false;
+    //     }else{
+    //       this.spotify.isAuthenticated = true;
+    //       // this.router.navigate(['/search']);
+    //     }
+    //   }
+    // );
   }
 
   change(){

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Album, Artist, PlayList, Track } from '../playlist';
 import { SpotifyService } from '../spotify.service';
 import { debounceTime, distinctUntilChanged, map, switchMap } from "rxjs/operators";
 import { Observable, of, Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -43,9 +44,9 @@ export class SearchComponent implements OnInit {
     },
   ];
 
-  constructor(private spotify: SpotifyService) { }
+  constructor(private spotify: SpotifyService, private router: Router) { }
 
-  ngOnInit(): void {
+  ngOnInit(){
     // this.searchTerms.pipe(
     //   debounceTime(300),
     //   distinctUntilChanged(),
@@ -86,7 +87,7 @@ export class SearchComponent implements OnInit {
     // )
 
     this.isAuthenticated();
-
+    
     this.searchTerms.pipe(
       debounceTime(300),
       // distinctUntilChanged(),
@@ -109,6 +110,8 @@ export class SearchComponent implements OnInit {
             console.log("map: ",JSON.parse(JSON.stringify(value)));
             let obj = JSON.parse(JSON.stringify(value));
             return obj;
+          }else{
+            console.log("yoksa burası mı");
           }
         }
       )
@@ -155,8 +158,39 @@ export class SearchComponent implements OnInit {
   }
 
   isAuthenticated(){
-    let url = "https://api.spotify.com/v1/users/" + "fnpx53326g03vygrg2ikesxci";
-    this.spotify.get(url).subscribe();
+
+    let client_id = localStorage.getItem('client_id');
+    let client_secret = localStorage.getItem('client_secret');
+    let acces_token = localStorage.getItem('acces_token');
+    let refresh_token = localStorage.getItem('refresh_token');
+
+    if(client_id && client_secret && acces_token && refresh_token){
+      this.spotify.isAuthenticated = true;
+    }
+
+    if(!acces_token || !refresh_token){
+      this.spotify.isAuthenticated = false;
+    }
+
+    if(!this.spotify.isAuthenticated){
+      this.router.navigate(['/authenticate']);
+    }
+
+    // console.log("is auth");
+    // let url = "https://api.spotify.com/v1/albums/" + "0sNOF9WDwhWunNAHPD3Baj";
+    // this.spotify.get(url).pipe(
+      
+    // ).subscribe(
+    //   res => {
+    //     console.log("error statuss: " , res)
+    //     if(res.status == 401){
+    //       this.spotify.isAuthenticated = false;
+    //       this.router.navigate(['/authenticate']);
+    //     }else{
+    //       this.spotify.isAuthenticated = true;
+    //     }
+    //   }
+    // );
   }
 }
 
