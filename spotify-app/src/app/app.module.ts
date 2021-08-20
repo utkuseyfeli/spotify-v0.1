@@ -20,6 +20,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
 import { FooterPlayerComponent } from './footer-player/footer-player.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { FooterPlayerComponent } from './footer-player/footer-player.component';
     TrackComponent,
     PlaylistComponent,
     FooterPlayerComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,17 +1,15 @@
-
-
 <div>
     <h2>Authenticate:</h2>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="text-field">
         <mat-label >Client Id: </mat-label>
         <input matInput #client_id id="client_id">
     </mat-form-field>
     <br>
-    <mat-form-field appearance="fill" color="warn">
+    <mat-form-field appearance="fill" color="warn" class="text-field">
         <mat-label>Client Secret: </mat-label>
         <input matInput #client_secret id="client_secret" >
     </mat-form-field>
-
+    
     <br> <br>
     
     <button mat-raised-button color="accent" (click)="authenticate(client_id.value, client_secret.value)">Submit</button>
@@ -27,7 +25,7 @@
     <h3>User: <span style="color:purple">{{user.display_name}}</span></h3>
     <p>Country: {{user.country}}</p>
     <p>Id: {{user.id}}</p>
-
+    
     <button mat-raised-button color="accent" (click)="getCurrentUserPlaylists()">Get Playlists for this user</button>
 </div>
 <br>

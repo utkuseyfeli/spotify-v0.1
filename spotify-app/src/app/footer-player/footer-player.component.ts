@@ -14,11 +14,7 @@ export class FooterPlayerComponent implements OnInit {
   }
 
   stop(){
-    this.spotify.put("https://api.spotify.com/v1/me/player/pause").subscribe(
-      res => {
-        console.log(res);
-      }
-    );
+    
   }
 
 }

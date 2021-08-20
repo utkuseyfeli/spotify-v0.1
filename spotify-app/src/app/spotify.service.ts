@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { toUnicode } from 'punycode';
-import { asapScheduler, Observable } from 'rxjs';
+import { asapScheduler, Observable, of } from 'rxjs';
 import { ConditionalExpr } from '@angular/compiler';
 import { PlaylistRespObject, RefreshRespObject, RespObject } from './response';
 import { SpotifyUser } from './user';
 import { Album, Artist, PlayList, Track } from './playlist';
 import { catchError, map } from 'rxjs/operators';
 import { ValueTransformer } from '@angular/compiler/src/util';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class SpotifyService {
   baseUrl: string = "https://accounts.spotify.com/api";
   respObject?: RespObject;
   user?: SpotifyUser;
+  isAuthenticated?: boolean;
 
   httpOptions = {
     headers: new HttpHeaders(
@@ -27,7 +29,7 @@ export class SpotifyService {
     observe: 'response' as 'response'
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public router: Router) { }
 
   authenticate(client_id: string, client_secret: string){
     console.log(client_id, "   ", client_secret);
@@ -179,9 +181,9 @@ export class SpotifyService {
       catchError(async (err) => {
         console.log("err: ", err);
         if(err.status == 401){
-          await this.refreshAccesToken();
+          this.router.navigate(['/authenticate']);
         }
-        return this.http.get<any>(baseUrl, httpOptions);
+        return of(undefined);
       })
     );
   }
@@ -195,29 +197,17 @@ export class SpotifyService {
          }
       )
     }
+
     return this.http.get<any>(url, httpOptions).pipe(
-      catchError(async (err) => {
+      catchError((err) => {
         console.log("err: ", err);
         if(err.status == 401){
-          await this.refreshAccesToken();
+          this.isAuthenticated = false;
+          this.router.navigate(['/authenticate']);
         }
-        return this.http.get<any>(url, httpOptions);
-        // window.location.reload();
+        return of(undefined);
       })
     );
-  }
-
-  put(url: string): Observable<any>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
-      headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
-      )
-    }
-
-    return this.http.put<any>(url, httpOptions);
   }
 
 }

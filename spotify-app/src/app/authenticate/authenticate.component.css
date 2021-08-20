@@ -6,3 +6,7 @@ div{
 mat-label{
     color: black;
 }
+
+.text-field{
+    width: 400px;
+}
