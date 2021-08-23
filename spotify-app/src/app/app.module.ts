@@ -22,6 +22,7 @@ import {MatCardModule} from '@angular/material/card';
 import { FooterPlayerComponent } from './footer-player/footer-player.component';
 import { HeaderComponent } from './header/header.component';
 import { TrackDirective } from './track.directive';
+import { TrackDisplayComponent } from './track-display/track-display.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { TrackDirective } from './track.directive';
     FooterPlayerComponent,
     HeaderComponent,
     TrackDirective,
+    TrackDisplayComponent,
   ],
   imports: [
     BrowserModule,
