@@ -21,8 +21,8 @@ export class TrackComponent implements OnInit {
   constructor(private spotify:SpotifyService, private route: ActivatedRoute, public sanitizer: DomSanitizer) { }
 
   ngOnInit(){
+    this.spotify.isAuthenticatedService();
     this.getTrack();
-    
   }
 
   getTrack(){

@@ -13,9 +13,12 @@ export class AlbumComponent implements OnInit {
 
   album?: Album;
 
-  constructor(private spotify:SpotifyService, private route: ActivatedRoute) { }
+  constructor(private spotify:SpotifyService, private route: ActivatedRoute) { 
+  }
 
   ngOnInit(): void {
+
+    this.isAuthenticated();
     this.getAlbum();
   }
 
@@ -37,5 +40,9 @@ export class AlbumComponent implements OnInit {
         this.album = res;
       }
     );
+  }
+
+  isAuthenticated(){
+    this.spotify.isAuthenticatedService();
   }
 }

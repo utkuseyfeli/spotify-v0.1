@@ -17,6 +17,8 @@ export class PlaylistComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.spotify.isAuthenticatedService();
+
     const id = this.route.snapshot.paramMap.get('id')!;
 
     let url = "https://api.spotify.com/v1/playlists/" + id;

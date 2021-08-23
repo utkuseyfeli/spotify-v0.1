@@ -19,7 +19,7 @@ export class SpotifyService {
   baseUrl: string = "https://accounts.spotify.com/api";
   respObject?: RespObject;
   user?: SpotifyUser;
-  isAuthenticated: boolean = false;
+  isAuthenticated?: boolean;
 
   httpOptions = {
     headers: new HttpHeaders(
@@ -235,4 +235,23 @@ export class SpotifyService {
     );
   }
 
+  isAuthenticatedService(){
+
+    let client_id = localStorage.getItem('client_id');
+    let client_secret = localStorage.getItem('client_secret');
+    let acces_token = localStorage.getItem('acces_token');
+    let refresh_token = localStorage.getItem('refresh_token');
+
+    if(client_id && client_secret && acces_token && refresh_token){
+      this.isAuthenticated = true;
+    }
+
+    if(!acces_token || !refresh_token){
+      this.isAuthenticated = false;
+    }
+
+    if(!this.isAuthenticated){
+      this.router.navigate(['/authenticate']);
+    }
+  }
 }

@@ -9,7 +9,7 @@
     &nbsp;
     
     <!-- this is not correct -->
-    <mat-checkbox *ngFor="let item of checkBoxDataList" [ngModel]="item.isChecked" (ngModelChange)="item.isChecked = !item.isChecked" > 
+    <mat-checkbox *ngFor="let item of checkBoxDataList" [ngModel]="item.isChecked" (ngModelChange)="item.isChecked = !item.isChecked" color="primary"> 
         {{item.label}} &nbsp; &nbsp;
     </mat-checkbox>
       

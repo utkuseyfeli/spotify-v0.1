@@ -17,8 +17,9 @@ export class ArtistComponent implements OnInit {
   constructor(private spotify:SpotifyService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getArtist();
 
+    this.spotify.isAuthenticatedService();
+    this.getArtist();
   }
 
   getArtist(){
