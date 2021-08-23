@@ -10,7 +10,7 @@ a{
 
 mat-expansion-panel{
     border: 3px solid black;
-    width: max-content;
+    width: 75%;
     margin-left: 20px;
     margin-bottom: 5px;
 }

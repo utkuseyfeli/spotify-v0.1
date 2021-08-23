@@ -20,6 +20,10 @@
                 </mat-panel-title>
                 <mat-panel-description></mat-panel-description>
             </mat-expansion-panel-header>
-            <app-track [id]="track.id"></app-track>
+
+            <ng-template matExpansionPanelContent>
+                <app-track [id]="track.id"></app-track>
+            </ng-template>
+            
         </mat-expansion-panel>
 </div>

@@ -20,12 +20,16 @@
 
     <mat-expansion-panel hideToggle *ngFor="let track of playlist.tracks" style="margin: auto; margin-bottom: 5px; width: 80%;">
         <mat-expansion-panel-header>
-        <mat-panel-title>
-            {{track.name}}
-        </mat-panel-title>
-        <mat-panel-description></mat-panel-description>
+            <mat-panel-title>
+                {{track.name}}
+            </mat-panel-title>
+            <mat-panel-description></mat-panel-description>
         </mat-expansion-panel-header>
-        <app-track [id]="track.id"></app-track>
+
+        <ng-template matExpansionPanelContent>
+            <app-track [id]="track.id"></app-track>
+        </ng-template>
+        
     </mat-expansion-panel>
 
 </div>
