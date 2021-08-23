@@ -25,8 +25,12 @@ export class AuthenticateComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngoninit");
-    this.fetchAccessToken();
     this.isAuthenticated();
+    if(this.spotify.isAuthenticated){
+      this.fetchAccessToken();
+    }
+    
+    
   }
 
   authenticate(client_id: string, client_secret: string){
@@ -87,7 +91,7 @@ export class AuthenticateComponent implements OnInit {
     );
   }
 
-  isAuthenticated(){
+  isAuthenticated(){ // check auth!!!!
     let client_id = localStorage.getItem('client_id');
     let client_secret = localStorage.getItem('client_secret');
     let acces_token = localStorage.getItem('acces_token');

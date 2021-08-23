@@ -214,42 +214,34 @@ export class SearchComponent implements OnInit {
         console.log("res ",res);
         if(res != undefined){
           if(this.checkBoxDataList[0].isChecked){
-            this.offsetAlbum += res.albums.items.length;
-            
-            if(res.albums.items.length < 15){
+            if(res.albums.items.length < 15 || this.albums!.length < 15){
               this.loadAlbum = false;
             }
-
+            this.offsetAlbum += res.albums.items.length;
             this.albums = this.albums?.concat(res.albums.items);
           }
   
           if(this.checkBoxDataList[1].isChecked){
-            this.offsetTrack += res.tracks.items.length;
-
-            if(res.tracks.items.length < 15){
+            if(res.tracks.items.length < 15 || this.tracks!.length < 15){
               this.loadTrack = false;
             }
-
+            this.offsetTrack += res.tracks.items.length;
             this.tracks = this.tracks?.concat(res.tracks.items);
           }
   
           if(this.checkBoxDataList[2].isChecked){
-            this.offsetPlaylist += res.playlists.items.length;
-
-            if(res.playlists.items.length < 15){
+            if(res.playlists.items.length < 15 || this.playlists!.length < 15){
               this.loadPlaylist = false;
             }
-
+            this.offsetPlaylist += res.playlists.items.length;
             this.playlists = this.playlists?.concat(res.playlists.items);
           }
   
           if(this.checkBoxDataList[3].isChecked){
-            this.offsetArtist += res.artists.items.length;
-
-            if(res.artists.items.length < 15){
+            if(res.artists.items.length < 15 || this.artists!.length < 15){
               this.loadArtist = false;
             }
-
+            this.offsetArtist += res.artists.items.length;
             this.artists = this.artists?.concat(res.artists.items);
           }
         }

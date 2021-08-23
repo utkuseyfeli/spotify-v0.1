@@ -149,10 +149,15 @@ export class SpotifyService {
     ).subscribe(
         res => {
           console.log("Response: ",res);
-          let response: RefreshRespObject = res.body as RefreshRespObject;
+          let response: RefreshRespObject = res?.body as RefreshRespObject;
           // save the new acces token
-          localStorage.setItem("acces_token", response.access_token);
-          this.router.navigate(['/search']);
+          if(response){
+            localStorage.setItem("acces_token", response.access_token);
+            this.router.navigate(['/search']);
+          }else {
+            console.log("fetch access token fail");
+          }
+          
         }
       )
   }
