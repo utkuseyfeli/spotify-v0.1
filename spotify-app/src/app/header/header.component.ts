@@ -30,4 +30,10 @@ export class HeaderComponent implements OnInit, OnChanges {
   //   console.log("is authenticated changed to: ", this.isAuthenticated);
   // }
 
+  logOut(){
+    localStorage.clear();
+    this.isAuthenticated = false;
+    window.location.reload();
+  }
+
 }

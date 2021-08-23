@@ -1,18 +1,25 @@
-<div style="background-color: black; color: whitesmoke; padding: 1%; border-bottom:2px solid purple;">
-    
-    <table style="width: 100%;">
+<div>
+    <table>
         <tr>
             <td>
                 <h1>Spotify</h1>
             </td>
-            <td style="float: right;" *ngIf="!isAuthenticated">
+            <td class="right" *ngIf="!isAuthenticated">
                 <button mat-raised-button routerLink="/authenticate"> Authenticate</button>
             </td>
-            <td style="float: right; padding: 7px;">
+            <td class="padding">
             </td>
-            <td style="float: right;">
+            <td class="right">
                 <button mat-raised-button routerLink="/search">Search</button>
-                
+            </td>
+        </tr>
+
+        <tr *ngIf="isAuthenticated" >
+            <td></td>
+            <td class="padding"></td>
+            
+            <td class="right">
+                <button mat-raised-button (click)="logOut()"> Log Out</button>
             </td>
             
         </tr>

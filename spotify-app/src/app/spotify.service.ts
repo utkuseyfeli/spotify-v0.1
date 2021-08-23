@@ -205,10 +205,9 @@ export class SpotifyService {
       catchError((err) => {
         console.log("err: ", err);
         if(err.status == 401){
-          this.isAuthenticated = false;
-          this.router.navigate(['/authenticate']);
+          this.refreshAccesToken();
         }
-        return of(undefined);
+        return this.http.get<any>(baseUrl, httpOptions);
       })
     );
   }
@@ -226,6 +225,13 @@ export class SpotifyService {
     console.log("httpoptions", auth);
 
     return this.http.get<any>(url, httpOptions).pipe(
+      catchError((err) => {
+        console.log("err: ", err);
+        if(err.status == 401){
+          this.refreshAccesToken();
+        }
+        return this.http.get<any>(url, httpOptions);
+      })
     );
   }
 

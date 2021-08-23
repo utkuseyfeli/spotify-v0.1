@@ -1,0 +1,18 @@
+.padding{
+    float: right;
+    padding: 7px;
+}
+table{
+    width: 100%;
+}
+
+div{
+    background-color: black; 
+    color: whitesmoke; 
+    padding: 1%; 
+    border-bottom:2px solid purple;
+}
+
+.right{
+    float:right;
+}
