@@ -21,6 +21,16 @@ export class SearchComponent implements OnInit {
   private searchTerms = new Subject<string>();
   response!: Observable<JSON>;
 
+  offsetAlbum: number;
+  offsetTrack: number;
+  offsetPlaylist: number;
+  offsetArtist: number;
+
+  loadAlbum: boolean;
+  loadTrack: boolean;
+  loadPlaylist: boolean;
+  loadArtist: boolean;
+
   checkBoxDataList = [
     {
       label: 'Albums',
@@ -44,7 +54,17 @@ export class SearchComponent implements OnInit {
     },
   ];
 
-  constructor(private spotify: SpotifyService, private router: Router) { }
+  constructor(private spotify: SpotifyService, private router: Router) { 
+    this.offsetAlbum = 15;
+    this.offsetArtist = 15;
+    this.offsetPlaylist = 15;
+    this.offsetTrack = 15;
+
+    this.loadAlbum = true;
+    this.loadArtist = true;
+    this.loadTrack = true;
+    this.loadPlaylist = true;
+  }
 
   ngOnInit(){
     // this.searchTerms.pipe(
@@ -93,6 +113,7 @@ export class SearchComponent implements OnInit {
       // distinctUntilChanged(),
       switchMap(term => {
         if(term && this.searchCond){
+
           let resp = this.spotify.search(term, this.searchCond);
           return resp;
         }else{
@@ -144,6 +165,15 @@ export class SearchComponent implements OnInit {
     // this.checkBoxDataList.forEach((value, index)=>{
     //   console.log(value);
     // })
+    this.loadTrack=true;
+    this.loadAlbum = true;
+    this.loadArtist = true;
+    this.loadPlaylist = true;
+
+    this.offsetAlbum = 15;
+    this.offsetArtist = 15;
+    this.offsetTrack = 15;
+    this.offsetPlaylist = 15;
 
     this.searchCond = "";
     this.checkBoxDataList.forEach((value,index)=>{
@@ -175,22 +205,56 @@ export class SearchComponent implements OnInit {
     if(!this.spotify.isAuthenticated){
       this.router.navigate(['/authenticate']);
     }
+  }
 
-    // console.log("is auth");
-    // let url = "https://api.spotify.com/v1/albums/" + "0sNOF9WDwhWunNAHPD3Baj";
-    // this.spotify.get(url).pipe(
-      
-    // ).subscribe(
-    //   res => {
-    //     console.log("error statuss: " , res)
-    //     if(res.status == 401){
-    //       this.spotify.isAuthenticated = false;
-    //       this.router.navigate(['/authenticate']);
-    //     }else{
-    //       this.spotify.isAuthenticated = true;
-    //     }
-    //   }
-    // );
+  loadMore(offset: number){
+    console.log("utkutkutkutkut");
+    this.spotify.searchWithOffset(this.searchStr!, this.searchCond, offset).subscribe(
+      res => {
+        console.log("res ",res);
+        if(res != undefined){
+          if(this.checkBoxDataList[0].isChecked){
+            this.offsetAlbum += res.albums.items.length;
+            
+            if(res.albums.items.length < 15){
+              this.loadAlbum = false;
+            }
+
+            this.albums = this.albums?.concat(res.albums.items);
+          }
+  
+          if(this.checkBoxDataList[1].isChecked){
+            this.offsetTrack += res.tracks.items.length;
+
+            if(res.tracks.items.length < 15){
+              this.loadTrack = false;
+            }
+
+            this.tracks = this.tracks?.concat(res.tracks.items);
+          }
+  
+          if(this.checkBoxDataList[2].isChecked){
+            this.offsetPlaylist += res.playlists.items.length;
+
+            if(res.playlists.items.length < 15){
+              this.loadPlaylist = false;
+            }
+
+            this.playlists = this.playlists?.concat(res.playlists.items);
+          }
+  
+          if(this.checkBoxDataList[3].isChecked){
+            this.offsetArtist += res.artists.items.length;
+
+            if(res.artists.items.length < 15){
+              this.loadArtist = false;
+            }
+
+            this.artists = this.artists?.concat(res.artists.items);
+          }
+        }
+      }
+    )
   }
 }
 

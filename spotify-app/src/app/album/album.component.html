@@ -1,14 +1,14 @@
 <div *ngIf="album" style="width: 700px;">
 
     <h3>Album name: {{album.name}}</h3>
-    <div style="margin: auto; width: max-content;">
+    <div class="max">
         <img src="{{album.images[1].url}}" alt="">
         <p>Label: {{album.label}}</p>
         <p>Release Date: {{album.release_date}}</p>
     </div>
 
     <h4>Artists: </h4>
-    <div *ngFor="let artist of album.artists" style="width: max-content;">
+    <div *ngFor="let artist of album.artists" class="max">
         <app-artist [id] = "artist.id" [picSize] = 2></app-artist>
     </div>
 

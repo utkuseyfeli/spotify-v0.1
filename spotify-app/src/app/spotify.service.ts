@@ -207,8 +207,44 @@ export class SpotifyService {
         if(err.status == 401){
           this.refreshAccesToken();
         }
+        window.location.reload();
         return this.http.get<any>(baseUrl, httpOptions);
       })
+    );
+  }
+
+  searchWithOffset(query: string, conditions: string, offset: number): Observable<any>{
+    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
+    let httpOptions = {
+      headers: new HttpHeaders(
+        {'Authorization': auth,
+        'Content-Type': 'application/json'
+         }
+      )
+    }
+
+    let baseUrl: string = "https://api.spotify.com/v1/search";
+    baseUrl += "?q=" + query;
+    baseUrl += "&type=" + conditions;
+    baseUrl += "&market=TR";
+    baseUrl += "&limit=15";
+    baseUrl += "&offset=" + offset;
+
+    return this.http.get<any>(baseUrl, httpOptions).pipe(
+      catchError((err) => {
+        console.log("err: ", err);
+        if(err.status == 401){
+          this.refreshAccesToken();
+        }
+        window.location.reload();
+        return this.http.get<any>(baseUrl, httpOptions);
+      }),
+      map(
+        data => {
+          let obj = JSON.parse(JSON.stringify(data));
+          return obj;
+        }
+      )
     );
   }
 

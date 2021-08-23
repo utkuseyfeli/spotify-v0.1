@@ -1,7 +1,7 @@
 
-<div style="margin:auto; text-align: center;">
+<div class="center-text">
     
-    <mat-form-field appearance="fill" style="width: 400px;">
+    <mat-form-field appearance="fill">
         <mat-label>Search...</mat-label>
         <input matInput type="text" id="searchStr" [(ngModel)]="searchStr" (keyup)="search()">
     </mat-form-field>
@@ -21,6 +21,7 @@
     <li *ngFor="let album of albums"> 
         <a routerLink="/album/{{album.id}}">{{album.name}}</a>
     </li>
+    <a *ngIf="loadAlbum" (click)="loadMore(offsetAlbum)"> Load More...</a>
     <hr>
 </div>
 
@@ -29,6 +30,7 @@
     <li *ngFor="let track of tracks"> 
         <a routerLink="/track/{{track.id}}">{{track.name}}</a>
     </li>
+    <a *ngIf="loadTrack" (click) = "loadMore(offsetTrack)"> Load More...</a>
     <hr>
 </div>
 
@@ -37,6 +39,7 @@
     <li *ngFor="let playlist of playlists"> 
         <a routerLink="/playlist/{{playlist.id}}">{{playlist.name}}</a>
     </li>
+    <a *ngIf="loadPlaylist" (click)="loadMore(offsetPlaylist)"> Load More...</a>
     <hr>
 </div>
 
@@ -45,6 +48,7 @@
     <li *ngFor="let artist of artists"> 
         <a routerLink="/artist/{{artist.id}}">{{artist.name}}</a>
     </li>
+    <a *ngIf="loadArtist" (click)="loadMore(offsetArtist)"> Load More...</a>
     <hr>
 </div>
 

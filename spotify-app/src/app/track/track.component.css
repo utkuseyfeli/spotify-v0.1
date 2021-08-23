@@ -1,4 +1,10 @@
 div{
     margin: auto;
-    width: 400px;
+    width: max-content;
+}
+
+mat-card{
+    background-color: lightgreen;
+    margin: auto;
+    width: max-content;
 }

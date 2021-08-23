@@ -6,4 +6,26 @@ div {
     align-items: center;
     margin: auto;
     float: none;
+    padding: 1%; 
+    background-color: lightgreen; 
+    width: 70%;
+}
+
+table{
+    margin: auto;
+}
+
+td{
+    width: 50%;
+}
+
+img{
+    width: 250px;
+    height: 300px;
+}
+
+mat-expansion-panel{
+    margin: auto;
+    margin-bottom: 5px;
+    width: 85%;
 }

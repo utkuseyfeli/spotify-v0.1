@@ -1,14 +1,14 @@
-<div *ngIf="playlist" style="padding: 1%; background-color: lightgreen; width: max-content;">
+<div *ngIf="playlist">
     
     <h2> Playlist: {{playlist.name}}</h2>
 
-    <table style="margin: auto;">
+    <table>
         <tr>
-            <td style="width: 50%;">
-                <img src="{{playlist.images[0].url}}" alt="" style="width: 250px; height: 300px;">
+            <td >
+                <img src="{{playlist.images[0].url}}" alt="XXX" >
             </td>
 
-            <td style="width: 50%;">
+            <td >
                 <h3>Total followers: {{playlist.followers}}</h3>
 
                 <h4>Owner Name: {{playlist.owner.display_name}}</h4>
@@ -18,7 +18,7 @@
     
     <h4 *ngIf='playlist.description != ""'> Description: {{playlist.description}}</h4>
 
-    <mat-expansion-panel hideToggle *ngFor="let track of playlist.tracks" style="margin: auto; margin-bottom: 5px; width: 80%;">
+    <mat-expansion-panel hideToggle *ngFor="let track of playlist.tracks" style="">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 {{track.name}}

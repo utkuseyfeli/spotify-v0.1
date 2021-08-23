@@ -8,6 +8,10 @@ a{
     font-weight: bold;
 }
 
+.max{
+    width: max-content;
+}
+
 mat-expansion-panel{
     border: 3px solid black;
     width: 75%;
