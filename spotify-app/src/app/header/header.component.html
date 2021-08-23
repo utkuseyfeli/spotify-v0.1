@@ -9,7 +9,7 @@
             </td>
             <td class="padding">
             </td>
-            <td class="right">
+            <td class="right" *ngIf="isAuthenticated">
                 <button mat-raised-button routerLink="/search">Search</button>
             </td>
         </tr>

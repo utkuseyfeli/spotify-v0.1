@@ -49,7 +49,7 @@ export class TrackComponent implements OnInit {
         console.log("inside init: ", this.track);
         let url = "https://open.spotify.com/embed/track/" + this.track.id;
 
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url); // needed inorder to open songs
       }
     )
   }

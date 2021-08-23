@@ -1,19 +1,19 @@
 <div *ngIf="album" style="width: 700px;">
 
-    <h3 style="font-weight: bold;">Album name: {{album.name}}</h3>
+    <h3>Album name: {{album.name}}</h3>
     <div style="margin: auto; width: max-content;">
         <img src="{{album.images[1].url}}" alt="">
         <p>Label: {{album.label}}</p>
         <p>Release Date: {{album.release_date}}</p>
     </div>
 
-    <h4 style="font-weight: bold;">Artists: </h4>
+    <h4>Artists: </h4>
     <div *ngFor="let artist of album.artists" style="width: max-content;">
         <app-artist [id] = "artist.id" [picSize] = 2></app-artist>
     </div>
 
-    <h4 style="font-weight: bold;">Songs in the album: </h4>
-        <mat-expansion-panel hideToggle *ngFor="let track of album.tracks" style="border: 3px solid black; width: max-content; margin-left: 20px; margin-bottom: 5px;">
+    <h4>Songs in the album: </h4>
+        <mat-expansion-panel hideToggle *ngFor="let track of album.tracks">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     {{track.name}}

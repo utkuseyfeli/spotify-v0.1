@@ -26,11 +26,13 @@ export class PlaylistComponent implements OnInit {
       map(value => {
         let data = JSON.parse(JSON.stringify(value));
         data.tracks = JSON.parse(JSON.stringify(value.tracks.items));
+
         let tracks: Track[] = [];
         data.tracks.forEach((track: any) => {
           let xd = JSON.parse(JSON.stringify(track.track));
           tracks.push(xd);
         });
+        
         data.tracks = tracks;
         data.followers = JSON.parse(JSON.stringify(value.followers.total));
         return data;

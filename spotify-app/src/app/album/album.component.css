@@ -7,3 +7,14 @@ a{
     color:purple;
     font-weight: bold;
 }
+
+mat-expansion-panel{
+    border: 3px solid black;
+    width: max-content;
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
+
+h4, h3{
+    font-weight: bold;
+}

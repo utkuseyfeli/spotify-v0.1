@@ -14,11 +14,11 @@
     
     <button mat-raised-button color="accent" (click)="authenticate(client_id.value, client_secret.value)">Submit</button>
     &nbsp; 
-    <button mat-raised-button color="accent" (click)="fetchAccessToken()">Fetch Acces Token</button>
+    <!-- <button mat-raised-button color="accent" (click)="fetchAccessToken()">Fetch Acces Token</button>
     <br><br>
-    <button mat-raised-button color="accent" (click)="refreshTokens()" *ngIf="refresh_token">Refresh Tokens</button>
-    <br><br>
-    <button mat-raised-button color="accent" (click)="getUser()">Get User</button>
+    <button mat-raised-button color="accent" (click)="refreshTokens()" *ngIf="refresh_token">Refresh Tokens</button> -->
+    <!-- <br><br>
+    <button mat-raised-button color="accent" (click)="getUser()">Get User</button> -->
 </div>
 <br>
 <div *ngIf='user'>
@@ -36,4 +36,4 @@
     </li>
 </div>
 
-<button mat-button (click)="change()">Change</button>
+<!-- <button mat-button (click)="change()">Change</button> -->
