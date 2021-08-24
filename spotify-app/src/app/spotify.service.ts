@@ -1,37 +1,33 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { toUnicode } from 'punycode';
-import { asapScheduler, Observable, of } from 'rxjs';
-import { ConditionalExpr } from '@angular/compiler';
-import { PlaylistRespObject, RefreshRespObject, RespObject } from './response';
-import { SpotifyUser } from './user';
-import { Album, Artist, PlayList, Track } from './playlist';
-import { catchError, map } from 'rxjs/operators';
-import { ValueTransformer } from '@angular/compiler/src/util';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, of } from "rxjs";
+import { PlaylistRespObject, RefreshRespObject, RespObject } from "./response";
+import { SpotifyUser } from "./user";
+import { catchError, map } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class SpotifyService {
 
-  authUrl: string = "https://accounts.spotify.com/authorize";
-  baseUrl: string = "https://accounts.spotify.com/api";
+  authUrl = "https://accounts.spotify.com/authorize";
+  baseUrl = "https://accounts.spotify.com/api";
   respObject?: RespObject;
   user?: SpotifyUser;
   isAuthenticated?: boolean;
 
   httpOptions = {
     headers: new HttpHeaders(
-      {'Content-Type': 'application/x-www-form-urlencoded'
+      {"Content-Type": "application/x-www-form-urlencoded"
       }
     ),
-    observe: 'response' as 'response'
+    observe: "response" as "response"
   };
 
   constructor(private http: HttpClient, public router: Router) { }
 
-  authenticate(client_id: string, client_secret: string){
+  authenticate(client_id: string, client_secret: string): void{
     console.log(client_id, "   ", client_secret);
     this.authUrl += "?client_id=" + client_id;
     this.authUrl += "&response_type=code";
@@ -50,9 +46,9 @@ export class SpotifyService {
     window.location.href = this.authUrl;
   }
 
-  fetchAccessToken(code: string){
-    let client_id = localStorage.getItem("client_id");
-    let client_secret = localStorage.getItem('client_secret');
+  fetchAccessToken(code: string): void{
+    const client_id = localStorage.getItem("client_id");
+    const client_secret = localStorage.getItem("client_secret");
 
     let body = "grant_type=authorization_code";
     body += "&code=" + code;
@@ -65,28 +61,28 @@ export class SpotifyService {
     this.fetchRespOpbject(body);
   }
 
-  fetchRespOpbject(body: string){
+  fetchRespOpbject(body: string): void{
     console.log(body);
 
-    let auth: string = 'Basic ' + btoa(localStorage.getItem('client_id') + ":" + localStorage.getItem('client_secret'));
+    const auth: string = "Basic " + btoa(localStorage.getItem("client_id") + ":" + localStorage.getItem("client_secret"));
     console.log("Auth string is: "+ auth);
 
     this.httpOptions={
       headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': auth
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": auth
       }),
-      observe: 'response' as 'response'
-    }
+      observe: "response" as "response"
+    };
     
-    console.log("this is headers get authorization: " + this.httpOptions.headers.get('Authorization'));
+    console.log("this is headers get authorization: " + this.httpOptions.headers.get("Authorization"));
 
     this.isAuthenticated = true;
 
     this.http.post<RespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions).pipe(
       catchError(
         err => {
-          if(err.status == 401){
+          if (err.status == 401){
             this.isAuthenticated = false;
           }
           let empty: any;
@@ -94,42 +90,42 @@ export class SpotifyService {
         }
       )
     ).subscribe(
-        res => {
-          console.log("response: "+ res);
-          console.log("response body: "+res.body);
-          console.log("response status:" + res.status);
-          console.log("response status text: " +res.statusText);
+      res => {
+        console.log("response: "+ res);
+        console.log("response body: "+res.body);
+        console.log("response status:" + res.status);
+        console.log("response status text: " +res.statusText);
 
-          this.respObject = res.body as RespObject;
-          console.log("response object: " + this.respObject);
+        this.respObject = res.body as RespObject;
+        console.log("response object: " + this.respObject);
 
-          console.log("response object acces token: "+this.respObject?.access_token);
-          console.log("response object expires_in: "+this.respObject?.expires_in);
-          console.log("response object token type: "+this.respObject?.token_type);
-          console.log("response object refresh token: "+this.respObject?.refresh_token);
-          localStorage.setItem('acces_token', this.respObject.access_token);
-          localStorage.setItem("refresh_token", this.respObject.refresh_token);
-          this.router.navigate(['/authenticate']);
-          window.location.reload();
-        }
-      );
+        console.log("response object acces token: "+this.respObject?.access_token);
+        console.log("response object expires_in: "+this.respObject?.expires_in);
+        console.log("response object token type: "+this.respObject?.token_type);
+        console.log("response object refresh token: "+this.respObject?.refresh_token);
+        localStorage.setItem("acces_token", this.respObject.access_token);
+        localStorage.setItem("refresh_token", this.respObject.refresh_token);
+        this.router.navigate(["/authenticate"]);
+        window.location.reload();
+      }
+    );
   }
 
-  refreshAccesToken(){
-    let refresh_token = localStorage.getItem('refresh_token');
+  refreshAccesToken(): void{
+    const refresh_token = localStorage.getItem("refresh_token");
     let body = "&grant_type=refresh_token";
     body += "&refresh_token=" + refresh_token;
 
-    let auth: string = 'Basic ' + btoa(localStorage.getItem('client_id') + ":" + localStorage.getItem('client_secret'));
+    const auth: string = "Basic " + btoa(localStorage.getItem("client_id") + ":" + localStorage.getItem("client_secret"));
     // console.log("Auth string is: "+ auth);
 
     this.httpOptions={
       headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': auth
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": auth
       }),
-      observe: 'response' as 'response'
-    }
+      observe: "response" as "response"
+    };
 
 
     console.log("refresh: " + body);
@@ -139,7 +135,7 @@ export class SpotifyService {
     this.http.post<RefreshRespObject>("https://accounts.spotify.com/api/token", body, this.httpOptions).pipe(
       catchError(
         err => {
-          if(err.status == 401){
+          if (err.status == 401){
             this.isAuthenticated = false;
           }
           let empty: any;
@@ -147,59 +143,59 @@ export class SpotifyService {
         }
       )
     ).subscribe(
-        res => {
-          console.log("Response: ",res);
-          let response: RefreshRespObject = res?.body as RefreshRespObject;
-          // save the new acces token
-          if(response){
-            localStorage.setItem("acces_token", response.access_token);
-            this.router.navigate(['/search']);
-          }else {
-            console.log("fetch access token fail");
-          }
-          
+      res => {
+        console.log("Response: ",res);
+        const response: RefreshRespObject = res?.body as RefreshRespObject;
+        // save the new acces token
+        if (response){
+          localStorage.setItem("acces_token", response.access_token);
+          this.router.navigate(["/search"]);
+        } else {
+          console.log("fetch access token fail");
         }
-      )
+        
+      }
+    );
   }
 
   getUser(): Observable<SpotifyUser>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
+    const auth: string = "Bearer " + localStorage.getItem("acces_token");
+    const httpOptions = {
       headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
+        {"Authorization": auth,
+          "Content-Type": "application/json"
+        }
       )
-    }
+    };
 
-    let result = this.http.get<SpotifyUser>("https://api.spotify.com/v1/me", httpOptions)
+    const result = this.http.get<SpotifyUser>("https://api.spotify.com/v1/me", httpOptions);
     return result;
   }
 
   getCurrentUserPlayLists(): Observable<PlaylistRespObject>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
+    const auth: string = "Bearer " + localStorage.getItem("acces_token");
+    const httpOptions = {
       headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
+        {"Authorization": auth,
+          "Content-Type": "application/json"
+        }
       )
-    }
+    };
 
-    return this.http.get<PlaylistRespObject>("https://api.spotify.com/v1/me/playlists", httpOptions)
+    return this.http.get<PlaylistRespObject>("https://api.spotify.com/v1/me/playlists", httpOptions);
   }
 
   search(query: string, conditions: string): Observable<any>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
+    const auth: string = "Bearer " + localStorage.getItem("acces_token");
+    const httpOptions = {
       headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
+        {"Authorization": auth,
+          "Content-Type": "application/json"
+        }
       )
-    }
+    };
 
-    let baseUrl: string = "https://api.spotify.com/v1/search";
+    let baseUrl = "https://api.spotify.com/v1/search";
     baseUrl += "?q=" + query;
     baseUrl += "&type=" + conditions;
     baseUrl += "&market=TR";
@@ -209,7 +205,7 @@ export class SpotifyService {
     return this.http.get<any>(baseUrl, httpOptions).pipe(
       catchError((err) => {
         console.log("err: ", err);
-        if(err.status == 401){
+        if (err.status == 401){
           this.refreshAccesToken();
         }
         window.location.reload();
@@ -219,16 +215,16 @@ export class SpotifyService {
   }
 
   searchWithOffset(query: string, conditions: string, offset: number): Observable<any>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
+    const auth: string = "Bearer " + localStorage.getItem("acces_token");
+    const httpOptions = {
       headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
+        {"Authorization": auth,
+          "Content-Type": "application/json"
+        }
       )
-    }
+    };
 
-    let baseUrl: string = "https://api.spotify.com/v1/search";
+    let baseUrl = "https://api.spotify.com/v1/search";
     baseUrl += "?q=" + query;
     baseUrl += "&type=" + conditions;
     baseUrl += "&market=TR";
@@ -238,7 +234,7 @@ export class SpotifyService {
     return this.http.get<any>(baseUrl, httpOptions).pipe(
       catchError((err) => {
         console.log("err: ", err);
-        if(err.status == 401){
+        if (err.status == 401){
           this.refreshAccesToken();
         }
         window.location.reload();
@@ -246,7 +242,7 @@ export class SpotifyService {
       }),
       map(
         data => {
-          let obj = JSON.parse(JSON.stringify(data));
+          const obj = JSON.parse(JSON.stringify(data));
           return obj;
         }
       )
@@ -254,21 +250,21 @@ export class SpotifyService {
   }
 
   get(url: string): Observable<any>{
-    let auth: string = 'Bearer ' + localStorage.getItem('acces_token');
-    let httpOptions = {
+    const auth: string = "Bearer " + localStorage.getItem("acces_token");
+    const httpOptions = {
       headers: new HttpHeaders(
-        {'Authorization': auth,
-        'Content-Type': 'application/json'
-         }
+        {"Authorization": auth,
+          "Content-Type": "application/json"
+        }
       )
-    }
+    };
 
     console.log("httpoptions", auth);
 
     return this.http.get<any>(url, httpOptions).pipe(
       catchError((err) => {
         console.log("err: ", err);
-        if(err.status == 401){
+        if (err.status == 401){
           this.refreshAccesToken();
         }
         return this.http.get<any>(url, httpOptions);
@@ -276,23 +272,23 @@ export class SpotifyService {
     );
   }
 
-  isAuthenticatedService(){
+  isAuthenticatedService(): void{
 
-    let client_id = localStorage.getItem('client_id');
-    let client_secret = localStorage.getItem('client_secret');
-    let acces_token = localStorage.getItem('acces_token');
-    let refresh_token = localStorage.getItem('refresh_token');
+    const client_id = localStorage.getItem("client_id");
+    const client_secret = localStorage.getItem("client_secret");
+    const acces_token = localStorage.getItem("acces_token");
+    const refresh_token = localStorage.getItem("refresh_token");
 
-    if(client_id && client_secret && acces_token && refresh_token){
+    if (client_id && client_secret && acces_token && refresh_token){
       this.isAuthenticated = true;
     }
 
-    if(!acces_token || !refresh_token){
+    if (!acces_token || !refresh_token){
       this.isAuthenticated = false;
     }
 
-    if(!this.isAuthenticated){
-      this.router.navigate(['/authenticate']);
+    if (!this.isAuthenticated){
+      this.router.navigate(["/authenticate"]);
     }
   }
 }

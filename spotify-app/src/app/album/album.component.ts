@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { Album } from '../playlist';
-import { SpotifyService } from '../spotify.service';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { map } from "rxjs/operators";
+import { Album } from "../playlist";
+import { SpotifyService } from "../spotify.service";
 
 @Component({
-  selector: 'app-album',
-  templateUrl: './album.component.html',
-  styleUrls: ['./album.component.css']
+  selector: "app-album",
+  templateUrl: "./album.component.html",
+  styleUrls: ["./album.component.css"]
 })
 export class AlbumComponent implements OnInit {
 
@@ -22,8 +22,8 @@ export class AlbumComponent implements OnInit {
     this.getAlbum();
   }
 
-  getAlbum(){
-    const id = this.route.snapshot.paramMap.get('id');
+  getAlbum(): void{
+    const id = this.route.snapshot.paramMap.get("id");
 
     let url = "https://api.spotify.com/v1/albums/" + id;
     url += "?market=TR";
@@ -42,7 +42,7 @@ export class AlbumComponent implements OnInit {
     );
   }
 
-  isAuthenticated(){
+  isAuthenticated(): void{
     this.spotify.isAuthenticatedService();
   }
 }

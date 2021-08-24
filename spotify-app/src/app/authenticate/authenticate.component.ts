@@ -1,17 +1,16 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { RespObject } from '../response';
-import { SpotifyService } from '../spotify.service';
-import { SpotifyUser } from '../user';
-import { PlayList } from '../playlist';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { RespObject } from "../response";
+import { SpotifyService } from "../spotify.service";
+import { SpotifyUser } from "../user";
+import { PlayList } from "../playlist";
+import { catchError } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 
 @Component({
-  selector: 'app-authenticate',
-  templateUrl: './authenticate.component.html',
-  styleUrls: ['./authenticate.component.css']
+  selector: "app-authenticate",
+  templateUrl: "./authenticate.component.html",
+  styleUrls: ["./authenticate.component.css"]
 })
 export class AuthenticateComponent implements OnInit {
 
@@ -23,25 +22,25 @@ export class AuthenticateComponent implements OnInit {
 
   constructor(private spotify: SpotifyService, public router: Router) { }
 
-  ngOnInit() {
+  ngOnInit(): void{
     console.log("ngoninit");
     this.isAuthenticated();
     this.fetchAccessToken();
   }
 
-  authenticate(client_id: string, client_secret: string){
+  authenticate(client_id: string, client_secret: string): void{
     this.spotify.authenticate(client_id, client_secret);
   }
 
-  refreshTokens(){
+  refreshTokens(): void{
     this.spotify.refreshAccesToken();
   }
 
-  getUser(){
+  getUser(): void{
     this.spotify.getUser().pipe(
       catchError(async (err) => {
         console.log("err: ", err);
-        if(err.status == 401){
+        if (err.status == 401){
           await this.spotify.refreshAccesToken();
         }
         return this.spotify.getUser();
@@ -50,22 +49,22 @@ export class AuthenticateComponent implements OnInit {
       res => {
         console.log(res);
         this.user = res as SpotifyUser;
-        let user = this.user;
-        console.log('User country, id, name: ' + user.country + ' ' + user.id + ' ' + user.display_name);
+        const user = this.user;
+        console.log("User country, id, name: " + user.country + " " + user.id + " " + user.display_name);
       }
     );
     
   }
 
-  fetchAccessToken(){
-    if(window.location.search.length > 0){
+  fetchAccessToken(): void{
+    if (window.location.search.length > 0){
       
       let needed: string;
       const code = window.location.search;
 
-      if(code.length > 0){
+      if (code.length > 0){
         const urlParams = new URLSearchParams(code);
-        needed = urlParams.get('code')!; // ! is the non-null assertion operator
+        needed = urlParams.get("code")!; // ! is the non-null assertion operator
         console.log("needed is " + needed);
 
         this.spotify.fetchAccessToken(needed);
@@ -74,7 +73,7 @@ export class AuthenticateComponent implements OnInit {
     }
   }
 
-  getCurrentUserPlaylists(){
+  getCurrentUserPlaylists(): void{
     this.spotify.getCurrentUserPlayLists().subscribe(
       res => {
 
@@ -87,22 +86,22 @@ export class AuthenticateComponent implements OnInit {
     );
   }
 
-  isAuthenticated(){ // check auth!!!!
-    let client_id = localStorage.getItem('client_id');
-    let client_secret = localStorage.getItem('client_secret');
-    let acces_token = localStorage.getItem('acces_token');
-    this.refresh_token = localStorage.getItem('refresh_token')!;
+  isAuthenticated(): void{ // check auth!!!!
+    const client_id = localStorage.getItem("client_id");
+    const client_secret = localStorage.getItem("client_secret");
+    const acces_token = localStorage.getItem("acces_token");
+    this.refresh_token = localStorage.getItem("refresh_token")!;
 
-    if(client_id && client_secret && acces_token && this.refresh_token){
+    if (client_id && client_secret && acces_token && this.refresh_token){
       this.spotify.isAuthenticated = true;
     }
 
-    if(!acces_token || !this.refresh_token){
+    if (!acces_token || !this.refresh_token){
       this.spotify.isAuthenticated = false;
     }
 
-    if(this.spotify.isAuthenticated){
-      this.router.navigate(['/search']);
+    if (this.spotify.isAuthenticated){
+      this.router.navigate(["/search"]);
     }
 
     // this part is going to be for expired tokens
@@ -121,7 +120,7 @@ export class AuthenticateComponent implements OnInit {
     // );
   }
 
-  change(){
+  change(): void{
     this.spotify.isAuthenticated = !this.spotify.isAuthenticated;
   }
 }
