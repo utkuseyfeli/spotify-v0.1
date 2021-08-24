@@ -26,11 +26,7 @@ export class AuthenticateComponent implements OnInit {
   ngOnInit() {
     console.log("ngoninit");
     this.isAuthenticated();
-    if(this.spotify.isAuthenticated){
-      this.fetchAccessToken();
-    }
-    
-    
+    this.fetchAccessToken();
   }
 
   authenticate(client_id: string, client_secret: string){
