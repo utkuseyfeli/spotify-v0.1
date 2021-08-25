@@ -91,20 +91,21 @@ export class SpotifyService {
       )
     ).subscribe(
       res => {
-        console.log("response: "+ res);
-        console.log("response body: "+res.body);
-        console.log("response status:" + res.status);
-        console.log("response status text: " +res.statusText);
+        // console.log("response: "+ res);
+        // console.log("response body: "+res.body);
+        // console.log("response status:" + res.status);
+        // console.log("response status text: " +res.statusText);
 
         this.respObject = res.body as RespObject;
         console.log("response object: " + this.respObject);
-
         console.log("response object acces token: "+this.respObject?.access_token);
         console.log("response object expires_in: "+this.respObject?.expires_in);
         console.log("response object token type: "+this.respObject?.token_type);
         console.log("response object refresh token: "+this.respObject?.refresh_token);
+
         localStorage.setItem("acces_token", this.respObject.access_token);
         localStorage.setItem("refresh_token", this.respObject.refresh_token);
+        
         this.router.navigate(["/authenticate"]);
         window.location.reload();
       }
@@ -126,7 +127,6 @@ export class SpotifyService {
       }),
       observe: "response" as "response"
     };
-
 
     console.log("refresh: " + body);
     // this.fetchRespOpbject(body);

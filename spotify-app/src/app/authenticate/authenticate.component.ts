@@ -22,9 +22,10 @@ export class AuthenticateComponent implements OnInit {
 
   constructor(private spotify: SpotifyService, public router: Router) { }
 
-  ngOnInit(): void{
-    console.log("ngoninit");
-    this.isAuthenticated();
+  async ngOnInit(){
+    console.log("ngoninit ");
+    await this.isAuthenticated();
+
     this.fetchAccessToken();
   }
 
