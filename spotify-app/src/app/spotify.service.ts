@@ -168,8 +168,7 @@ export class SpotifyService {
       )
     };
 
-    const result = this.http.get<SpotifyUser>("https://api.spotify.com/v1/me", httpOptions);
-    return result;
+    return this.http.get<SpotifyUser>("https://api.spotify.com/v1/me", httpOptions);
   }
 
   getCurrentUserPlayLists(): Observable<PlaylistRespObject>{
@@ -186,14 +185,6 @@ export class SpotifyService {
   }
 
   search(query: string, conditions: string): Observable<any>{
-    const auth: string = "Bearer " + localStorage.getItem("acces_token");
-    const httpOptions = {
-      headers: new HttpHeaders(
-        {"Authorization": auth,
-          "Content-Type": "application/json"
-        }
-      )
-    };
 
     let baseUrl = "https://api.spotify.com/v1/search";
     baseUrl += "?q=" + query;
@@ -202,27 +193,19 @@ export class SpotifyService {
     baseUrl += "&limit=15";
     baseUrl += "&offset=0";
 
-    return this.http.get<any>(baseUrl, httpOptions).pipe(
+    return this.get(baseUrl).pipe(
       catchError((err) => {
         console.log("err: ", err);
         if (err.status == 401){
           this.refreshAccesToken();
         }
         window.location.reload();
-        return this.http.get<any>(baseUrl, httpOptions);
+        return this.get(baseUrl);
       })
     );
   }
 
   searchWithOffset(query: string, conditions: string, offset: number): Observable<any>{
-    const auth: string = "Bearer " + localStorage.getItem("acces_token");
-    const httpOptions = {
-      headers: new HttpHeaders(
-        {"Authorization": auth,
-          "Content-Type": "application/json"
-        }
-      )
-    };
 
     let baseUrl = "https://api.spotify.com/v1/search";
     baseUrl += "?q=" + query;
@@ -231,14 +214,14 @@ export class SpotifyService {
     baseUrl += "&limit=15";
     baseUrl += "&offset=" + offset;
 
-    return this.http.get<any>(baseUrl, httpOptions).pipe(
+    return this.get(baseUrl).pipe(
       catchError((err) => {
         console.log("err: ", err);
         if (err.status == 401){
           this.refreshAccesToken();
         }
         window.location.reload();
-        return this.http.get<any>(baseUrl, httpOptions);
+        return this.get(baseUrl);
       }),
       map(
         data => {

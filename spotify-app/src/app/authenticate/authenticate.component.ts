@@ -19,7 +19,6 @@ export class AuthenticateComponent implements OnInit {
   playlists?: PlayList[];
   refresh_token?: string;
   
-
   constructor(private spotify: SpotifyService, public router: Router) { }
 
   async ngOnInit(){
