@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ArtistComponent } from './artist.component';
+import { ArtistComponent } from "./artist.component";
 
-describe('ArtistComponent', () => {
+describe("ArtistComponent", () => {
   let component: ArtistComponent;
   let fixture: ComponentFixture<ArtistComponent>;
 
@@ -10,7 +10,7 @@ describe('ArtistComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ ArtistComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('ArtistComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
